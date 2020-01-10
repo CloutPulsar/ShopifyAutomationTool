@@ -12,6 +12,7 @@ public class TestBrowser
 		Browser brows = new Browser(url);
 		//Assert that the URL was set.
 		Assert.assertEquals(brows.getUrl(), url);
+		
 	}
 	@Test
 	public void sampleTest()
