@@ -5,8 +5,8 @@
     <classes>
       <class name="TestBrowser">
         <methods>
-          <include name="sampleTest"/>
-          <include name="initialBrowserTest"/>
+          <include name="initialUrlTest"/>
+          <include name="loadBrowserTest"/>
         </methods>
       </class> <!-- TestBrowser -->
     </classes>
