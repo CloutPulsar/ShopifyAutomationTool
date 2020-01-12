@@ -1,16 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: TestBrowser
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 1, Errors: 0, Skipped: 1, Time elapsed: 1.305 sec <<< FAILURE!
-initialUrlTest(TestBrowser)  Time elapsed: 1.043 sec  <<< FAILURE!
-java.lang.IllegalStateException: The path to the driver executable must be set by the webdriver.chrome.driver system property; for more information, see https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver. The latest version can be downloaded from http://chromedriver.storage.googleapis.com/index.html
-	at com.google.common.base.Preconditions.checkState(Preconditions.java:847)
-	at org.openqa.selenium.remote.service.DriverService.findExecutable(DriverService.java:134)
-	at org.openqa.selenium.chrome.ChromeDriverService.access$000(ChromeDriverService.java:35)
-	at org.openqa.selenium.chrome.ChromeDriverService$Builder.findDefaultExecutable(ChromeDriverService.java:159)
-	at org.openqa.selenium.remote.service.DriverService$Builder.build(DriverService.java:355)
-	at org.openqa.selenium.chrome.ChromeDriverService.createDefaultService(ChromeDriverService.java:94)
-	at org.openqa.selenium.chrome.ChromeDriver.<init>(ChromeDriver.java:123)
-	at Browser.loadBrowser(Browser.java:25)
-	at TestBrowser.initialUrlTest(TestBrowser.java:15)
-
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.157 sec

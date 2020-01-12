@@ -10,13 +10,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class TestBrowser
 {
-	String url = "https://kith.com/products.json";
-	Browser brows = new Browser(url);
+	String url = "https://bdgastore.com";
+	Browser brows = new Browser();
 	@BeforeTest //annotation
 	public void initialUrlTest() throws InterruptedException
 	{
 		System.out.println("Initial Test Commencing: Opening Browswer and Loading Webpage...");
 		//Assert that the URL was set.
+		brows.setUrl(url);
 		Assert.assertEquals(brows.getUrl(), url);
 		brows.loadBrowser();
 	}
