@@ -1,2 +1,4 @@
-Browser.class
+clientInfo.class
 BasicSiteFunctions.class
+Browser.class
+Checkout.class

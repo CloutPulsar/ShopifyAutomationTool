@@ -24,8 +24,6 @@ public class TestBrowser
 	public void loadBrowserTest() throws IOException, InterruptedException
 	{
 		clientInfo client = new clientInfo();
-		while(true)
-		{
 		brows.loadBrowser();
 		System.out.println("Dummy Test");
 		brows.initiateSearch();
@@ -43,6 +41,5 @@ public class TestBrowser
 		brows.loadCheckoutVariant(client);
 		Thread.sleep(1000);
 		brows.closeBrowser();
-		}
 	}
 }
