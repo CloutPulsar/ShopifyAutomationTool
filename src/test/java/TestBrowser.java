@@ -19,13 +19,30 @@ public class TestBrowser
 		//Assert that the URL was set.
 		brows.setUrl(url);
 		Assert.assertEquals(brows.getUrl(), url);
-		brows.loadBrowser();
 	}
 	@Test
-	public void loadBrowserTest() throws IOException
+	public void loadBrowserTest() throws IOException, InterruptedException
 	{
+		clientInfo client = new clientInfo();
+		while(true)
+		{
+		brows.loadBrowser();
 		System.out.println("Dummy Test");
 		brows.initiateSearch();
+		String[] test = brows.getSites().split("\n");
+		for(String s : test)
+			System.out.println(s);
+		brows.setTotalPages("100", "kith");
+		System.out.println(brows.getSites());
+		String url = "https://kith.com";
+		brows.setUrl(url);
+		String var = "19436289851520";
+		brows.setVariant(var);
+		System.out.println(brows.getVariant());
+		System.out.println(brows.getUrl());
+		brows.loadCheckoutVariant(client);
+		Thread.sleep(1000);
 		brows.closeBrowser();
+		}
 	}
 }
