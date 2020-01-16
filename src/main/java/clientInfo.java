@@ -1,122 +1,171 @@
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class clientInfo
 {
-	private String Email, FName, LName, Address, Apartment, City, Country_Region, State, ZIP_code, Phone;
-	private String[] fullinfo;
+	private Map<String,String> fullinfo = new LinkedHashMap<String, String>();
+	private Map<String, String> payInfo = new LinkedHashMap<String, String>();
+	public clientInfo()
+	{
+		initializeClient();
+		initializePay();
+
+	}
+	private void initializePay()
+	{
+		payInfo.put("cc-number", "");
+		payInfo.put("cc-name", "");
+		payInfo.put("cc-exp", "");
+		payInfo.put("cc-csc", "");
+	}
+	private void initializeClient()
+	{
+		fullinfo.put("email","");
+		fullinfo.put("fname","");
+		fullinfo.put("lname","");
+		fullinfo.put("address1","");
+		fullinfo.put("address2","");
+		fullinfo.put("city","");
+		fullinfo.put("country","");
+		fullinfo.put("state","");
+		fullinfo.put("zip","");
+		fullinfo.put("phone","");
+
+		
+	}
+	public String hideInfo()
+	{
+		return "**************";
+	}
+	public void setCCNumber(String ccnumber)
+	{
+		payInfo.replace("cc-number", ccnumber);
+	}
+	public void setCCName(String CCName)
+	{
+		payInfo.replace("cc-name", CCName);
+	}
+	public void setCCExp(String ccExp)
+	{
+		payInfo.replace("cc-exp", ccExp);
+	}
+	public void setCsc(String csc)
+	{
+		payInfo.replace("cc-csc", csc);
+	}
 	public String getEmail()
 	{
-		return Email;
+		return fullinfo.get("email");
 	}
-
 	public void setEmail(String email)
 	{
-		this.Email = email;
+		fullinfo.replace("email", email);
 	}
-
 	public String getFName()
 	{
-		return FName;
+		return fullinfo.get("fname");
 	}
-
 	public void setFName(String fName)
 	{
-		this.FName = fName;
+		fullinfo.replace("fname", fName);
 	}
-
 	public String getLName()
 	{
-		return LName;
+		return fullinfo.get("lname");
 	}
-
 	public void setLName(String lName)
 	{
-		this.LName = lName;
+		fullinfo.replace("lname", lName);
 	}
-
 	public String getAddress()
 	{
-		return Address;
+		return fullinfo.get("address1");
 	}
-
 	public void setAddress(String address)
 	{
-		this.Address = address;
+		fullinfo.replace("address1", address);
 	}
-
 	public String getCity()
 	{
-		return City;
+		return fullinfo.get("city");
 	}
-
 	public void setCity(String city)
 	{
-		this.City = city;
+		fullinfo.replace("city", city);
 	}
-
 	public String getCountry_Region()
 	{
-		return Country_Region;
+		return fullinfo.get("country");
 	}
-
 	public void setCountry_Region(String country_Region)
 	{
-		this.Country_Region = country_Region;
+		fullinfo.replace("country", country_Region);
 	}
-
 	public String getState()
 	{
-		return State;
+		return fullinfo.get("state");
 	}
-
 	public void setState(String state)
 	{
-		this.State = state;
+		fullinfo.replace("state", state);
 	}
-
 	public String getZIP_code()
 	{
-		return ZIP_code;
+		return fullinfo.get("zip");
 	}
-
 	public void setZIP_code(String zIP_code)
 	{
-		this.ZIP_code = zIP_code;
+		fullinfo.replace("zip", zIP_code);
 	}
-
 	public String getPhone()
 	{
-		return Phone;
+		return fullinfo.get("phone");
 	}
-
 	public void setPhone(String phone)
 	{
-		this.Phone = phone;
+		fullinfo.replace("phone", phone);
 	}
-
-	public String getApartment()
+	public String getAddress2()
 	{
-		return Apartment;
+		return fullinfo.get("address2");
 	}
-
-	public void setApartment(String apartment)
+	public void setAddress2(String address2)
 
 	{
-		this.Apartment = apartment;
+		fullinfo.replace("address2", address2);
 	}
-
-	public String[] getFullinfo()
+	public Collection<String> getFullinfo()
 	{
-		return fullinfo;
+		return fullinfo.values();
 	}
-
-	public void setFullinfo()
+	public void setFullinfo(String[] fullinfo)
 	{
-		fullinfo = new String[]{Email, FName, LName, Address, Apartment, City, Country_Region, State, ZIP_code, Phone};
+		int i = 0;
+		for(Map.Entry<String, String> update : this.fullinfo.entrySet())
+		{
+			update.setValue(fullinfo[i]);
+			i++;
+		}
 	}
 	public void saveClientInfo()
 	{
 		
 	}
-
-	
+	String getCCNumber()
+	{
+		return payInfo.get("cc-number");
+	}
+	String getCCName()
+	{
+		return payInfo.get("cc-name");
+	}
+	String getCCExp()
+	{
+		return payInfo.get("cc-exp");
+	}
+	String getCsc()
+	{
+		return payInfo.get("cc-csc");
+	}
 }
