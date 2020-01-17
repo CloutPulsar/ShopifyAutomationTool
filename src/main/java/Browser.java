@@ -1,6 +1,4 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -11,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,9 +17,12 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -29,16 +31,32 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class Browser implements BasicSiteFunctions, Checkout
 {
 	public final static  int productPerPage = 30;
+	public int threadID = 0;
+	private final int availableThreads = Runtime.getRuntime().availableProcessors();
 	private final static String extension = "/collections/all/products.json?page=1&limit=250";
 	private final static HashMap<String, String[]> webMap = new HashMap<String, String[]>();
 	private final static ObjectMapper mapper = new ObjectMapper();
 	private final static ChromeOptions options = new ChromeOptions();
-
+	private static JsonNode jsonObject;
+	
 	private ArrayList<String> keywords = new ArrayList<String>();
 	private String url;
 	private String variant;
+	private String sizeOption = null;
 	private WebDriver driver;
 	private int totalPages;
+	private int PagesLoaded = 1;
+	/*----------------Shared Variables between Threads-----------------*/
+	//-----------------------------------------------------------------//
+	public static volatile int bestPage = Integer.MAX_VALUE;
+	public static volatile int globalMax = Integer.MIN_VALUE;
+	//------------------------------------------------------------------//
+    /*-----------------------------------------------------------------*/
+	private int[] priceRange = {Integer.MIN_VALUE, Integer.MAX_VALUE};
+	private Object[] bestProduct;
+	private boolean validVariant = false;
+	private Thread[] thread = new Thread[availableThreads];
+	long start,end;
 	
 	public static String[] sites;
 	public Browser()
@@ -86,17 +104,47 @@ public class Browser implements BasicSiteFunctions, Checkout
 		//Math.Ceiling implementation to round to the next highest number. i.e. (x + (n-1))/n
 		return ((pages*30)+249)/250;
 	}
-	public void initiateSearch() throws IOException
+	public void initiateSearch() throws IOException, InterruptedException
 	{
+		//---------------------------Create Threads for faster searching------------------------------------------//
+		Runnable runnable = new Runnable()
+		{
+			public void run()
+			{
+				try
+				{
+					int threadNum = threadID;
+					String data = getUrl() + extension.replace("page=1" , "page="+ thread[threadNum].getName().replace("Thread ", ""));
+					String JSON = fetchJSONData(data);
+					jsonObject = mapper.readTree(JSON);
+					int tmpProductCounter = jsonObject.get("products").size();
+					System.out.println(tmpProductCounter);
+					if(tmpProductCounter < 250)
+						totalPages = (tmpProductCounter + (productPerPage-1)) / productPerPage;	
+					productSearch(tmpProductCounter, threadNum);	
+				} catch (IOException | InterruptedException e)
+				{
+						e.printStackTrace();
+				}
+			}
+		};
+		for(int i = 0; i < ((availableThreads > 5) ? 5 : availableThreads); i++)
+		{
+			thread[i] = new Thread(runnable, ("Thread "+ (2+i)));
+			thread[i].start();
+			Thread.sleep(1);
+			threadID++;
+			System.out.println(thread[i].getName() + " has been initiated.");
+		}
 		String JSON = fetchJSONData(url);
 		//Format the JSON Data
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		JsonNode jsonObject = mapper.readTree(JSON);
+		jsonObject = mapper.readTree(JSON);
 		/*------------------For Data Extraction Analysis----------------------*/
-		String formattedJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
-		BufferedWriter writer = new BufferedWriter(new FileWriter("json.json"));
-	    writer.write(formattedJson);
-	    writer.close();
+		//String formattedJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
+		//BufferedWriter writer = new BufferedWriter(new FileWriter("json.json"));
+		//writer.write(formattedJson);
+		//writer.close();
 		/*------------------For Data Extraction Analysis----------------------*/
 	    //Must follow this format in order to access variants of each product without creating
 	    //more JsonNode instances: jsonObject.get("products").get(i).get("variants").toString()
@@ -104,35 +152,37 @@ public class Browser implements BasicSiteFunctions, Checkout
 		int tmpProductCounter = jsonObject.get("products").size();
 		System.out.println(tmpProductCounter);
 		if(tmpProductCounter < 250)
-			totalPages = (tmpProductCounter + (productPerPage-1)) / productPerPage;
-		productSearch(jsonObject, tmpProductCounter);
+			totalPages = (tmpProductCounter + (productPerPage-1)) / productPerPage;	
+		productSearch(tmpProductCounter, -1);
 	}
-	private void productSearch(JsonNode jsonObject, int productNum)
+	private void productSearch(int productNum, int threadNum) throws IOException, InterruptedException
 	{
 		int productNumber = 0;
 		int max = Integer.MIN_VALUE;
 		int[] productIndex = new int[productNum];
 		String[] handle,tags;
-        long start = System.currentTimeMillis(); 
+		if(PagesLoaded == 1)
+			start = System.currentTimeMillis(); 
 		for(JsonNode product : jsonObject.get("products"))
 		{
 			int count = 0;
-			handle = product.get("handle").toString().toLowerCase().replace("\"","").split("-");
-			tags = product.get("tags").toString().toLowerCase().replaceAll("[\\[\\]\\s\"]", "").split(",");
-			ArrayList<String> productWords = new ArrayList<String>(Arrays.asList(handle));
-			productWords.addAll(Arrays.asList(tags));
-			int prd = productWords.size();
-			for(String keyword : keywords)
+			int price = (int)Double.parseDouble(product.get("variants").get(0).get("price").asText());
+			if(price >= priceRange[0] && price <= priceRange[1])
 			{
-				if((float)count/prd >= .85)
-					break;
-				if(productWords.contains(keyword) && keyword != "")
-				{	
-					count++;
-					productWords.remove(keyword);
+				handle = product.get("handle").toString().toLowerCase().replace("\"","").split("-");
+				tags = product.get("tags").toString().toLowerCase().replaceAll("[\\[\\]\\s\"]", "").split(",");
+				ArrayList<String> productWords = new ArrayList<String>(Arrays.asList(handle));
+				productWords.addAll(Arrays.asList(tags));
+				for(String keyword : keywords)
+				{
+					if(productWords.contains(keyword) && keyword != "")
+					{	
+						count++;
+						productWords.remove(keyword);
+					}
+					if(max < count)
+						max = count;
 				}
-				if(max < count)
-					max = count;
 			}
 			productIndex[productNumber] = count;
 			productNumber++;
@@ -140,27 +190,89 @@ public class Browser implements BasicSiteFunctions, Checkout
 		Multimap<Integer, Integer> products = ArrayListMultimap.create();
 		for(int i =0; i < productIndex.length; i++)
 			products.put(productIndex[i], i);
+		System.out.println(products.toString());
 		Collection<Integer> maxMatches = products.get(max);
 		Object[] matches = maxMatches.toArray();
-		findVariantID(matches, matches.length);
-		long end = System.currentTimeMillis(); 
-        System.out.println("Page Search Performance Time: "+ (end-start)  +" ms");
+		synchronized(this)
+		{
+			int currPage = 1;
+			if(threadNum != -1)
+				 currPage = Integer.parseInt(thread[threadNum].getName().replace("Thread ", ""));
+			if(globalMax == max && currPage < bestPage)
+			{
+				globalMax = max;
+				bestProduct = matches;
+				bestPage = currPage;
+				System.out.println("BestPage is now "+bestPage);
+				System.out.println("Total Matches: "+ max);
+			}else if(globalMax < max)
+			{
+				globalMax = max;
+				bestProduct = matches;
+				bestPage = currPage;
+				System.out.println("BestPage is now "+bestPage);
+				System.out.println("Total Matches: "+ max);
+			}
+			if(threadNum != -1)
+				System.out.println(thread[threadNum].getName() + " has finished processing products.");
+		}
+		//Set the best product from the first page so that the next 
+		//if the next possible pages have the same max value, the bot will checkout the first product found
+		//on the first page.
+		
+		/*-----------------------------------------For Future Implementation of Monitoring------------------------------
+		String newUrl;
+		if((float)max/keywords.size() < .70 && isEmpty == false && PagesLoaded <=5)
+		{
+			nextPage++;
+			PagesLoaded++;
+			newUrl= getUrl() + extension.replace("page=1" , "page="+nextPage);
+			setUrl(newUrl);
+			initiateSearch();
+		}
+		else
+		{
+			//reset the url to the best page
+			newUrl = getUrl() + extension.replace("page=1" , "page="+bestPage);
+			setUrl(newUrl);
+			findVariantID(bestProduct, bestProduct.length);
+			long end = System.currentTimeMillis(); 
+	        System.out.println("Page Search Performance Time: "+ (end-start)  +" ms");
+		}
+		---------------------------------------------------------------------------------------------------------------------*/
+		if(threadNum != -1)
+			return;
+		String newUrl = getUrl() + extension.replace("page=1" , "page="+bestPage);
+		setUrl(newUrl);
+		findVariantID(bestProduct, bestProduct.length);
+		end = System.currentTimeMillis();
+		System.out.println("Page Search Performance Time: "+ (end-start)  +" ms");
+		
 	}
-	private void findVariantID(Object[] matches, int length)
+	private void findVariantID(Object[] matches, int length) throws JsonMappingException, JsonProcessingException
 	{
-		
-		
+		String JSON = fetchJSONData(url);
+		jsonObject = mapper.readTree(JSON);
+		if(sizeOption == null)
+		{
+			String str = jsonObject.get("products").get(Integer
+					.parseInt(matches[0].toString())).get("variants")
+					.get(0).get("id").toString();
+			setVariant(str);
+		}
+		else
+		{
+			
+		}
 	}
 	public void setUrl(String url)
 	{
 		this.url = url + extension;
 	}
-
 	public String getUrl()
 	{
-		return url.replace(extension, "");
+		return url.substring(0, url.indexOf("/collections"));
 	}
-
 	public void loadBrowser()
 	{
 		driver = new ChromeDriver(options);
@@ -230,56 +342,66 @@ public class Browser implements BasicSiteFunctions, Checkout
 	}
 	private void loadCheckoutVariantImplementation(clientInfo info) throws InterruptedException
 	{
-		int delay = 150;
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		String checkoutURL = getUrl() + checkoutExtension + variant;
-		driver.navigate().to(checkoutURL);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//main[@role='main']")));
-		WebElement t = driver.findElement(By.xpath("//main[@role='main']"));
-		t.findElement(By.name("checkout")).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='email']")));
-		driver.findElement(By.xpath("//input[@type='email']")).sendKeys(info.getEmail());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][first_name]']")).sendKeys(info.getFName());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][last_name]']")).sendKeys(info.getLName());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][address1]']")).sendKeys(info.getAddress());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][address2]']")).sendKeys(info.getAddress2());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][city]']")).sendKeys(info.getCity());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][country]']")).sendKeys(info.getCountry_Region());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][province]']")).sendKeys(info.getState());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][zip]']")).sendKeys(info.getZIP_code());
-		Thread.sleep(delay);
-		driver.findElement(By.xpath("//input[@name='checkout[shipping_address][phone]']")).sendKeys(info.getPhone());
-		driver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='step__footer__continue-btn btn']")));
-		driver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@class='card-fields-iframe']")));
-		List<WebElement> paymentInfo = driver.findElements(By.xpath("//iframe[@class='card-fields-iframe']"));
-		driver.switchTo().frame(paymentInfo.get(0));
-		Thread.sleep(600);
-		driver.findElement(By.xpath("//input[@autocomplete='cc-number']")).sendKeys(info.getCCNumber());
-		Thread.sleep(delay);
-		driver.switchTo().parentFrame();
-		driver.switchTo().frame(paymentInfo.get(1));
-		driver.findElement(By.xpath("//input[@autocomplete='cc-name']")).sendKeys(info.getCCName());
-		Thread.sleep(delay);
-		driver.switchTo().parentFrame();
-		driver.switchTo().frame(paymentInfo.get(2));
-		driver.findElement(By.xpath("//input[@autocomplete='cc-exp']")).sendKeys(info.getCCExp());
-		Thread.sleep(delay);
-		driver.switchTo().parentFrame();
-		driver.switchTo().frame(paymentInfo.get(3));
-		driver.findElement(By.xpath("//input[@autocomplete='cc-csc']")).sendKeys(info.getCsc());
-		Thread.sleep(delay);
-		driver.switchTo().parentFrame();
-		driver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+		try
+		{
+			int delay = 150;
+			WebDriverWait wait = new WebDriverWait(driver, 30);
+			String checkoutURL = getUrl() + checkoutExtension + variant;
+			driver.navigate().to(checkoutURL);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//main[@role='main']")));
+			WebElement t = driver.findElement(By.xpath("//main[@role='main']"));
+			t.findElement(By.name("checkout")).click();
+			Thread.sleep(100);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='email']")));
+			driver.findElement(By.xpath("//input[@type='email']")).sendKeys(info.getEmail());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][first_name]']")).sendKeys(info.getFName());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][last_name]']")).sendKeys(info.getLName());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][address1]']")).sendKeys(info.getAddress());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][address2]']")).sendKeys(info.getAddress2());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][city]']")).sendKeys(info.getCity());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][country]']")).sendKeys(info.getCountry_Region());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][province]']")).sendKeys(info.getState());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][zip]']")).sendKeys(info.getZIP_code());
+			Thread.sleep(delay);
+			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][phone]']")).sendKeys(info.getPhone());
+			driver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='step__footer__continue-btn btn']")));
+			driver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@class='card-fields-iframe']")));
+			List<WebElement> paymentInfo = driver.findElements(By.xpath("//iframe[@class='card-fields-iframe']"));
+			driver.switchTo().frame(paymentInfo.get(0));
+			Thread.sleep(600);
+			driver.findElement(By.xpath("//input[@autocomplete='cc-number']")).sendKeys(info.getCCNumber());
+			Thread.sleep(delay);
+			driver.switchTo().parentFrame();
+			driver.switchTo().frame(paymentInfo.get(1));
+			driver.findElement(By.xpath("//input[@autocomplete='cc-name']")).sendKeys(info.getCCName());
+			Thread.sleep(delay);
+			driver.switchTo().parentFrame();
+			driver.switchTo().frame(paymentInfo.get(2));
+			driver.findElement(By.xpath("//input[@autocomplete='cc-exp']")).sendKeys(info.getCCExp());
+			Thread.sleep(delay);
+			driver.switchTo().parentFrame();
+			driver.switchTo().frame(paymentInfo.get(3));
+			driver.findElement(By.xpath("//input[@autocomplete='cc-csc']")).sendKeys(info.getCsc());
+			Thread.sleep(delay);
+			driver.switchTo().parentFrame();
+			driver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+		}
+		catch(TimeoutException e)	
+		{
+			System.out.println("Caught Error: "+e);
+			driver.quit();
+		}
+		
 	}
 	public void loadCheckoutVariant(clientInfo info) throws InterruptedException
 	{
@@ -287,7 +409,8 @@ public class Browser implements BasicSiteFunctions, Checkout
 	}
 	public void setVariant(String variant)
 	{
-		this.variant = variant;	
+		this.variant = variant;
+		this.validVariant = true;
 	}
 	public String getVariant()
 	{
@@ -301,5 +424,25 @@ public class Browser implements BasicSiteFunctions, Checkout
 	{
 		this.keywords.clear();
 		this.keywords.addAll(Arrays.asList(keywords));
+	}
+	public String getSizeOption()
+	{
+		return sizeOption;
+	}	
+	public void setSizeOption(String sizeOption)
+	{
+		this.sizeOption = sizeOption.toLowerCase();
+	}
+	public boolean isValidVariant()
+	{
+		return validVariant;
+	}
+	public int[] getPriceRange()
+	{
+		return priceRange;
+	}
+	public void setPriceRange(int[] priceRange)
+	{
+		this.priceRange = priceRange;
 	}
 }

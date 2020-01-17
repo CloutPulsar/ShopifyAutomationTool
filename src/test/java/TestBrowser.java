@@ -26,11 +26,17 @@ public class TestBrowser
 		String[] info = {"edgargranados18@yahoo.com","Edgar","Steyermorrisontom","5700 Mack Road","",
 				"Sacramento","United States","California","95823","9168556514"};
 		clientInfo client = new clientInfo();
+		client.setCCNumber("4342568595887414");
+		client.setCCName("Reese Numss");
+		client.setCCExp("0618");
+		client.setCsc("159");
 		brows.loadBrowser();
 		System.out.println("Dummy Test");
-		String[] t = new String[1000009];
-		for (int i =0; i < 1000000; i++)
-			t[i] = "shirt";
+		String[] t = new String[10];
+		t[0] = "sandals";
+		t[1] = "kaw";
+		t[2] = "red";
+		t[3] = "suicoke";
 		t[t.length-6] ="apparel";
 		t[t.length-5] ="gray";
 		t[t.length-4] ="light gray";
@@ -39,9 +45,15 @@ public class TestBrowser
 		brows.setKeywords(info);
 		//System.out.println(Arrays.toString(brows.getKeywords()));
 		brows.setKeywords(t);
+		String url = "https://shop.extrabutterny.com";
+		brows.setUrl(url);
+		int[] range = {80, 250};
+		brows.setPriceRange(range);
+		client.setFullinfo(info);
 		brows.initiateSearch();
+		if(brows.isValidVariant())
+			brows.loadCheckoutVariant(client);
 		//System.out.println(Arrays.toString(brows.getKeywords()));
-		Thread.sleep(1000);
 		brows.closeBrowser();
 	}
 }

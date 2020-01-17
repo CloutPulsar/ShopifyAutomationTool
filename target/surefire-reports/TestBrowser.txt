@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: TestBrowser
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 26.015 sec
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.41 sec

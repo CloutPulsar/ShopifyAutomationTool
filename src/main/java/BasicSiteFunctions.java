@@ -10,4 +10,8 @@ public interface BasicSiteFunctions
 	public void setTotalPages(String pages, String key);
 	public String getKeywords();
 	public void setKeywords(String[] keywords);
+	public String getSizeOption();
+	public void setSizeOption(String sizeOption);
+	public int[] getPriceRange();
+	public void setPriceRange(int[] range);
 }
