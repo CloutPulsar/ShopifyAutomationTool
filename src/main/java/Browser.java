@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -33,7 +34,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	public final static  int productPerPage = 30;
 	public int threadID = 0;
 	private final int availableThreads = Runtime.getRuntime().availableProcessors();
-	private final static String extension = "/collections/all/products.json?page=1&limit=250";
+	private final static String extension = "/search?q=";
 	private final static HashMap<String, String[]> webMap = new HashMap<String, String[]>();
 	private final static ObjectMapper mapper = new ObjectMapper();
 	private final static ChromeOptions options = new ChromeOptions();
@@ -64,7 +65,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 		// The Following websites contain a products.json file, which allows for
 		// easier monitoring
 		sites = defaultSites();
-		WebDriverManager.chromedriver().version("79.0.3945.36").setup();
+		WebDriverManager.chromedriver().setup();
 		options.setExperimentalOption("excludeSwitches", new String[]
 		{"enable-automation"});
 		mapDefaultSites();
@@ -89,7 +90,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 		webMap.put("cncpts", new String[]{sites[4], "51",Integer.toString(calcPage250(51))});
 		webMap.put("notreshop", new String[]{sites[5], "28",Integer.toString(calcPage250(28))});
 		webMap.put("juicestrore", new String[]{sites[6], "28",Integer.toString(calcPage250(28))});
-
 	}
 	public String getSites()
 	{
@@ -106,6 +106,14 @@ public class Browser implements BasicSiteFunctions, Checkout
 	}
 	public void initiateSearch() throws IOException, InterruptedException
 	{
+		String tmpUrl = getUrl() + extension;
+		for(String s : keywords)
+		{
+			if(s != null)
+				tmpUrl += s+" ";
+		}
+		tmpUrl += "&type=products";
+		setUrl(tmpUrl);
 		//---------------------------Create Threads for faster searching------------------------------------------//
 		Runnable runnable = new Runnable()
 		{
@@ -114,136 +122,35 @@ public class Browser implements BasicSiteFunctions, Checkout
 				try
 				{
 					int threadNum = threadID;
-					String data = getUrl() + extension.replace("page=1" , "page="+ thread[threadNum].getName().replace("Thread ", ""));
-					String JSON = fetchJSONData(data);
-					jsonObject = mapper.readTree(JSON);
-					int tmpProductCounter = jsonObject.get("products").size();
-					System.out.println(tmpProductCounter);
-					if(tmpProductCounter < 250)
-						totalPages = (tmpProductCounter + (productPerPage-1)) / productPerPage;	
-					productSearch(tmpProductCounter, threadNum);	
+					productSearch(threadNum);	
 				} catch (IOException | InterruptedException e)
 				{
 						e.printStackTrace();
 				}
 			}
 		};
-		for(int i = 0; i < ((availableThreads > 5) ? 5 : availableThreads); i++)
+		for(int i = 0; i < ((availableThreads > 5 ) ? 5 : availableThreads); i++)
 		{
 			thread[i] = new Thread(runnable, ("Thread "+ (2+i)));
 			thread[i].start();
 			Thread.sleep(1);
 			threadID++;
 			System.out.println(thread[i].getName() + " has been initiated.");
-		}
-		String JSON = fetchJSONData(url);
-		//Format the JSON Data
-		mapper.enable(SerializationFeature.INDENT_OUTPUT);
-		jsonObject = mapper.readTree(JSON);
-		/*------------------For Data Extraction Analysis----------------------*/
-		//String formattedJson = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonObject);
-		//BufferedWriter writer = new BufferedWriter(new FileWriter("json.json"));
-		//writer.write(formattedJson);
-		//writer.close();
-		/*------------------For Data Extraction Analysis----------------------*/
-	    //Must follow this format in order to access variants of each product without creating
-	    //more JsonNode instances: jsonObject.get("products").get(i).get("variants").toString()
-	    //where i is the i-th product. 
-		int tmpProductCounter = jsonObject.get("products").size();
-		System.out.println(tmpProductCounter);
-		if(tmpProductCounter < 250)
-			totalPages = (tmpProductCounter + (productPerPage-1)) / productPerPage;	
-		productSearch(tmpProductCounter, -1);
+		}	
+		productSearch(-1);
 	}
-	private void productSearch(int productNum, int threadNum) throws IOException, InterruptedException
+	private void productSearch(int threadNum) throws IOException, InterruptedException
 	{
-		int productNumber = 0;
-		int max = Integer.MIN_VALUE;
-		int[] productIndex = new int[productNum];
-		String[] handle,tags;
 		if(PagesLoaded == 1)
+		{
 			start = System.currentTimeMillis(); 
-		for(JsonNode product : jsonObject.get("products"))
-		{
-			int count = 0;
-			int price = (int)Double.parseDouble(product.get("variants").get(0).get("price").asText());
-			if(price >= priceRange[0] && price <= priceRange[1])
-			{
-				handle = product.get("handle").toString().toLowerCase().replace("\"","").split("-");
-				tags = product.get("tags").toString().toLowerCase().replaceAll("[\\[\\]\\s\"]", "").split(",");
-				ArrayList<String> productWords = new ArrayList<String>(Arrays.asList(handle));
-				productWords.addAll(Arrays.asList(tags));
-				for(String keyword : keywords)
-				{
-					if(productWords.contains(keyword) && keyword != "")
-					{	
-						count++;
-						productWords.remove(keyword);
-					}
-					if(max < count)
-						max = count;
-				}
-			}
-			productIndex[productNumber] = count;
-			productNumber++;
-		}
-		Multimap<Integer, Integer> products = ArrayListMultimap.create();
-		for(int i =0; i < productIndex.length; i++)
-			products.put(productIndex[i], i);
-		System.out.println(products.toString());
-		Collection<Integer> maxMatches = products.get(max);
-		Object[] matches = maxMatches.toArray();
-		synchronized(this)
-		{
-			int currPage = 1;
-			if(threadNum != -1)
-				 currPage = Integer.parseInt(thread[threadNum].getName().replace("Thread ", ""));
-			if(globalMax == max && currPage < bestPage)
-			{
-				globalMax = max;
-				bestProduct = matches;
-				bestPage = currPage;
-				System.out.println("BestPage is now "+bestPage);
-				System.out.println("Total Matches: "+ max);
-			}else if(globalMax < max)
-			{
-				globalMax = max;
-				bestProduct = matches;
-				bestPage = currPage;
-				System.out.println("BestPage is now "+bestPage);
-				System.out.println("Total Matches: "+ max);
-			}
-			if(threadNum != -1)
-				System.out.println(thread[threadNum].getName() + " has finished processing products.");
-		}
-		//Set the best product from the first page so that the next 
-		//if the next possible pages have the same max value, the bot will checkout the first product found
-		//on the first page.
-		
-		/*-----------------------------------------For Future Implementation of Monitoring------------------------------
-		String newUrl;
-		if((float)max/keywords.size() < .70 && isEmpty == false && PagesLoaded <=5)
-		{
-			nextPage++;
 			PagesLoaded++;
-			newUrl= getUrl() + extension.replace("page=1" , "page="+nextPage);
-			setUrl(newUrl);
-			initiateSearch();
 		}
-		else
-		{
-			//reset the url to the best page
-			newUrl = getUrl() + extension.replace("page=1" , "page="+bestPage);
-			setUrl(newUrl);
-			findVariantID(bestProduct, bestProduct.length);
-			long end = System.currentTimeMillis(); 
-	        System.out.println("Page Search Performance Time: "+ (end-start)  +" ms");
-		}
-		---------------------------------------------------------------------------------------------------------------------*/
 		if(threadNum != -1)
 			return;
-		String newUrl = getUrl() + extension.replace("page=1" , "page="+bestPage);
-		setUrl(newUrl);
+		for(int i = 0; i < threadID; i++)
+			while(thread[i].isAlive())
+				;
 		findVariantID(bestProduct, bestProduct.length);
 		end = System.currentTimeMillis();
 		System.out.println("Page Search Performance Time: "+ (end-start)  +" ms");
@@ -271,7 +178,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	}
 	public String getUrl()
 	{
-		return url.substring(0, url.indexOf("/collections"));
+		return url.substring(0, url.indexOf("/search"));
 	}
 	public void loadBrowser()
 	{
