@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 public class TestBrowser
 {
-	String url = "https://bdgastore.com";
+	String url = "https://undefeated.com";
 	Browser brows = new Browser();
 	@BeforeTest //annotation
 	public void initialUrlTest() throws InterruptedException
@@ -30,20 +30,19 @@ public class TestBrowser
 		client.setCCName("Reese Numss");
 		client.setCCExp("0618");
 		client.setCsc("159");
-		String url = "https://kith.com";
 		brows.setUrl(url);
 		brows.loadBrowser();
 		System.out.println("Dummy Test");
 		String[] t = new String[10];
-		t[0] = "heron";
-		t[1] = "preston";
+		t[0] = "salvation";
+		t[1] = "cwhite";
 		t[3] = "denim";
 		t[4] = "jacket";
 		t[4] = "riserva";
 		brows.setKeywords(info);
 		//System.out.println(Arrays.toString(brows.getKeywords()));
 		brows.setKeywords(t);
-		int[] range = {800, 1000};
+		int[] range = {0, 1000};
 		brows.setPriceRange(range);
 		client.setFullinfo(info);
 		brows.initiateSearch();
