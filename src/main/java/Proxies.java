@@ -1,8 +1,6 @@
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -12,13 +10,25 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 public class Proxies
 {
+	public static class PageRefresherFix
+	{
+		public void run() {}
+	}
 	public int threadID = 0;
 	public int threads = 2;
 	public static volatile int successcount =0;
 	private static volatile int proxCounter = 0;
-	private Proxy proxy;
 	private final int availableThreads = Runtime.getRuntime().availableProcessors();
 	private Thread[] thread = new Thread[availableThreads];
 	private ArrayList<String> proxyList;
@@ -26,7 +36,6 @@ public class Proxies
 	{
 		//proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("52.179.18.244", 8080));
 		proxyList = fillProxyList();
-		multiThreadProxies(threads);
 	}
 	private ArrayList<String> fillProxyList()
 	{
@@ -43,88 +52,77 @@ public class Proxies
 		}
 		return list;
 	}
-	private void setUpConn() throws MalformedURLException, IOException
+	public WebDriver createDriver() throws InterruptedException, MalformedURLException, IOException
 	{
-		connect(3);
+		return createDriverImplementation();
 	}
-	private void setUpConn(int count) throws MalformedURLException, IOException
+	private WebDriver createDriverImplementation() throws InterruptedException, MalformedURLException, IOException
 	{
-		count--;
-		if (count <= 0)
-		{
-			System.out.println("ERROR: Could not connect after 3 attemps. Connection Timeout.");
-			return;
-		}
-		else
-			connect(count);
+		String proxy = testConnection();
+		ChromeOptions options = new ChromeOptions().addArguments("--proxy-server=http://" + proxy);
+		options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+		options.addArguments("--disable-extensions");
+		WebDriverManager.chromedriver().setup();
+		return new ChromeDriver(options);
 	}
-	private void connect(int id) throws MalformedURLException, IOException
+	private String testConnection() throws MalformedURLException, IOException
 	{
-		try 
+		String data = null;
+		while(proxCounter < proxyList.size()) 
 		{
-			URLConnection conn = new URL("https://stackoverflow.com/questions/5585779/how-do-i-convert-a-string-to-an-int-in-java").openConnection(proxy);
-			conn.addRequestProperty("User-Agent", "Mozilla");
-			conn.setConnectTimeout(5000);
-			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String inputLine;
-			while ((inputLine = in.readLine()) != null) 
-				 System.out.println(inputLine);
-			in.close();
-			synchronized(this)
+			String tmp = proxyList.get(proxCounter);
+			String[] IPandPort = tmp.split(":");
+			proxyList.remove(proxCounter);
+			proxCounter++;
+			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(IPandPort[0], Integer.parseInt(IPandPort[1])));
+			try
 			{
-				successcount++;
+				URLConnection conn = new URL("https://google.com").openConnection(proxy);
+				conn.addRequestProperty("User-Agent", "Mozilla");
+				conn.setConnectTimeout(3000);
+				data = tmp;
+				System.out.println("Successfully Connected.");
+				break;
+			}catch(ConnectException e)
+			{
+				System.out.println("Current Proxy: IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
+				System.out.println("Error could not connect... Retrying with another Proxy...");
 			}
-			System.out.println("Success!"+successcount);
-
-		}catch(ConnectException e)
-		{
-			System.out.println("Connection Timed out... Retrying");
-			setUpConn(id);
 		}
+		return data;
 	}
-	private void multiThreadProxies(int threadCount) throws InterruptedException
+	public static void main(String[] args) throws InterruptedException
 	{
-		//---------------------------Create Threads for faster searching------------------------------------------//
-		Runnable runnable = new Runnable()
+		Proxies prox = new Proxies();
+		String proxy = prox.proxyList.get(8);
+		System.out.println(proxy);
+		ChromeOptions options = new ChromeOptions().addArguments("--proxy-server=http://" + proxy);
+		options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+		options.addArguments("--disable-extensions");
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver = new ChromeDriver(options);
+		WebDriverWait wait = new WebDriverWait(driver, 5);
+		PageRefresherFix tryAgain = new PageRefresherFix() 
 		{
-			public void run()
+			
+			@Override
+			public void run() 
 			{
-				int threadNum = threadID;
-				while(proxCounter < proxyList.size()) 
+				try
 				{
-					String data;
-					synchronized(this)
-					{
-						 data = proxyList.get(proxCounter);
-						 proxCounter++;
-					}
-					String[] IPandPort = data.split(":");
-					proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(IPandPort[0], Integer.parseInt(IPandPort[1])));
-					try
-					{
-						setUpConn();
-					} catch (IOException e)
-					{
-						System.out.println("Error Thread " + threadID +" could not connect to website.");
-						System.out.println("IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
-					}
+					driver.get("https://google.com");
+					System.out.println(driver.getTitle());
+					System.out.println("Success!");
+				}catch(TimeoutException e)
+				{
+					System.out.println("Error could not connect with proxy... Retrying");
+					System.out.println("FAILED PROXY: "+proxy);
+					driver.close();
+					run();
 				}
-
-
 			}
 		};
-		for(int i = 0; i < threadCount; i++)
-		{
-			thread[i] = new Thread(runnable, ("Thread "+ (2+i)));
-			thread[i].start();
-			Thread.sleep(1);
-			threadID++;
-			System.out.println(thread[i].getName() + " has been initiated.");
-		}
-	}
-	public static void main(String[] args) throws MalformedURLException, IOException, InterruptedException
-	{
-		Proxies proxyTest = new Proxies();
-		System.out.println("TEST BEGAN");
+		tryAgain.run();
+		
 	}
 }

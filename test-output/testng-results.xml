@@ -2,16 +2,16 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-06-24T21:51:50 PDT" name="Default suite" finished-at="2020-06-24T21:52:10 PDT" duration-ms="20038">
+  <suite started-at="2020-06-25T02:01:07 PDT" name="Default suite" finished-at="2020-06-25T02:01:45 PDT" duration-ms="38418">
     <groups>
     </groups>
-    <test started-at="2020-06-24T21:51:50 PDT" name="Default test" finished-at="2020-06-24T21:52:10 PDT" duration-ms="20038">
+    <test started-at="2020-06-25T02:01:07 PDT" name="Default test" finished-at="2020-06-25T02:01:45 PDT" duration-ms="38418">
       <class name="TestBrowser">
-        <test-method is-config="true" signature="initialUrlTest()[pri:0, instance:TestBrowser@7357a011]" started-at="2020-06-24T21:51:50 PDT" name="initialUrlTest" finished-at="2020-06-24T21:51:50 PDT" duration-ms="5" status="PASS">
+        <test-method is-config="true" signature="initialUrlTest()[pri:0, instance:TestBrowser@5609159b]" started-at="2020-06-25T02:01:07 PDT" name="initialUrlTest" finished-at="2020-06-25T02:01:07 PDT" duration-ms="5" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- initialUrlTest -->
-        <test-method signature="loadBrowserTest()[pri:0, instance:TestBrowser@7357a011]" started-at="2020-06-24T21:51:50 PDT" name="loadBrowserTest" finished-at="2020-06-24T21:52:10 PDT" duration-ms="20015" status="PASS">
+        <test-method signature="loadBrowserTest()[pri:0, instance:TestBrowser@5609159b]" started-at="2020-06-25T02:01:07 PDT" name="loadBrowserTest" finished-at="2020-06-25T02:01:45 PDT" duration-ms="38395" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- loadBrowserTest -->

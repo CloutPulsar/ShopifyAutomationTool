@@ -31,7 +31,6 @@ public class TestBrowser
 		client.setCCExp("0618");
 		client.setCsc("159");
 		brows.setUrl(url);
-		brows.loadBrowser();
 		System.out.println("Dummy Test");
 		String[] t = new String[10];
 		t[0] = "KITH";
@@ -51,6 +50,5 @@ public class TestBrowser
 		if(brows.isValidVariant())
 			brows.loadCheckoutVariant(client);
 		//System.out.println(Arrays.toString(brows.getKeywords()));
-		brows.closeBrowser();
 	}
 }
