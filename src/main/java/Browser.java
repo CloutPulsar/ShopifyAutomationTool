@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -71,9 +72,10 @@ public class Browser implements BasicSiteFunctions, Checkout
 		// The Following websites contain a products.json file, which allows for
 		// easier monitoring
 		sites = defaultSites();
-		WebDriverManager.chromedriver().setup();
 		options.setExperimentalOption("excludeSwitches", new String[]
 		{"enable-automation"});
+		options.addArguments("--disable-extensions");
+		WebDriverManager.chromedriver().setup();
 		mapDefaultSites();
 	}
 	// Maps the total page count with limit = 250 products per page for each
@@ -237,7 +239,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				return;
 			}
 		}
-		int i = 2;
+		int i = 0;
 		while (thread[i].isAlive())
 			thread[i].join();
 		String newUrl = getUrl()
@@ -350,7 +352,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 			String checkoutURL = getUrl() + checkoutExtension + variant;
 			driver.navigate().to(checkoutURL);
 			wait.until(driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
-			String cart = driver.getTitle();
 			WebElement t = driver.findElement(By.xpath("//main[@role='main']"));
 			t.findElement(By.name("checkout")).click();
 			wait.until(driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
@@ -373,12 +374,31 @@ public class Browser implements BasicSiteFunctions, Checkout
 					}				
 				}
 			};
-			System.out.println(driver.getTitle());
-			System.out.println(cart);
 			if(driver.getTitle().toLowerCase().contains("cart"))
 					tryAgain.run();
-			System.out.println(driver.getTitle());
-			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@type='email']")));
+			String temp = getUrl().substring(getUrl().indexOf("//")+2, getUrl().indexOf("."));
+			switch (temp)
+			{
+				case "undefeated":
+					driver.findElement(By.xpath("//input[@name='customer[email]']")).sendKeys(info.getLoginEmail());
+					Thread.sleep(delay);
+					driver.findElement(By.xpath("//input[@type='password']")).sendKeys(info.getLoginPassword());
+					Thread.sleep(delay);
+					driver.findElement(By.xpath("//input[@type='submit']")).click();
+					wait.until(driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete"));
+					break;
+				default:
+					try
+					{
+						t = driver.findElement(By.xpath("//div[@data-step='stock_problems']"));
+						System.out.println("Error: Item is Out of Stock.");
+						return;
+
+
+					}catch(NoSuchElementException e)
+					{
+					}
+			}
 			driver.findElement(By.xpath("//input[@type='email']")).sendKeys(info.getEmail());
 			Thread.sleep(delay);
 			driver.findElement(By.xpath("//input[@name='checkout[shipping_address][first_name]']")).sendKeys(info.getFName());

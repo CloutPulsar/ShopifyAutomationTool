@@ -34,17 +34,19 @@ public class TestBrowser
 		brows.loadBrowser();
 		System.out.println("Dummy Test");
 		String[] t = new String[10];
-		t[0] = "salvation";
-		t[1] = "cwhite";
-		t[3] = "denim";
-		t[4] = "jacket";
-		t[4] = "riserva";
+		t[0] = "KITH";
+		t[1] = "COLORBLOCKED";
+		t[2] = "SPORTY";
+		t[3] = "GI";
 		brows.setKeywords(info);
 		//System.out.println(Arrays.toString(brows.getKeywords()));
 		brows.setKeywords(t);
 		int[] range = {0, 1000};
 		brows.setPriceRange(range);
 		client.setFullinfo(info);
+		client.loginCredentials();
+		client.setLoginEmail(info[0]);
+		client.setLoginPassword(info[2]);
 		brows.initiateSearch();
 		if(brows.isValidVariant())
 			brows.loadCheckoutVariant(client);

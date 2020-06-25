@@ -148,9 +148,27 @@ public final class clientInfo
 			i++;
 		}
 	}
+	public void setLoginEmail(String email)
+	{
+		fullinfo.replace("loginEmail", email);
+
+	}
+	public void setLoginPassword(String password)
+	{
+		fullinfo.replace("loginPassword", password);
+	}
 	public void saveClientInfo()
 	{
 		
+	}
+	public void loginCredentials()
+	{
+		loginCreds();
+	}
+	private void loginCreds()
+	{
+		fullinfo.put("loginEmail","");
+		fullinfo.put("loginPassword","");
 	}
 	String getCCNumber()
 	{
@@ -167,5 +185,14 @@ public final class clientInfo
 	String getCsc()
 	{
 		return payInfo.get("cc-csc");
+	}
+	String getLoginPassword()
+	{
+		return fullinfo.get("loginPassword");
+	}
+	String getLoginEmail()
+	{
+		return fullinfo.get("loginEmail");
+
 	}
 }
