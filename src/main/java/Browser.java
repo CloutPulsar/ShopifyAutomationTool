@@ -340,7 +340,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 					{
 						WebDriver threadDriver = prox.createDriver();
 						WebDriverWait wait = new WebDriverWait(threadDriver, 30);
-						threadDriver.get("https://google.com");
+						threadDriver.get(checkoutURL);
 						wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
 						WebElement t = threadDriver.findElement(By.xpath("//main[@role='main']"));
 						t.findElement(By.name("checkout")).click();

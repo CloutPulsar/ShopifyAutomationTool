@@ -9,10 +9,14 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,17 +25,14 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Proxies
 {
-	public static class PageRefresherFix
-	{
-		public void run() {}
-	}
 	public int threadID = 0;
 	public int threads = 2;
 	public static volatile int successcount =0;
 	private static volatile int proxCounter = 0;
-	private final int availableThreads = Runtime.getRuntime().availableProcessors();
-	private Thread[] thread = new Thread[availableThreads];
+	private static volatile String proxy;
+	private static volatile boolean connected = false;
 	private ArrayList<String> proxyList;
+	private static WebDriver driver;
 	public Proxies() throws InterruptedException
 	{
 		//proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("52.179.18.244", 8080));
@@ -94,35 +95,45 @@ public class Proxies
 	public static void main(String[] args) throws InterruptedException
 	{
 		Proxies prox = new Proxies();
-		String proxy = "35.192.37.211:3128";
-		System.out.println(proxy);
-		ChromeOptions options = new ChromeOptions().addArguments("--proxy-server=http://" + proxy);
-		options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-		options.addArguments("--disable-extensions");
-		WebDriverManager.chromedriver().setup();
-		WebDriver driver = new ChromeDriver(options);
-		WebDriverWait wait = new WebDriverWait(driver, 5);
-		PageRefresherFix tryAgain = new PageRefresherFix() 
-		{
-			
-			@Override
-			public void run() 
+		
+		 while(connected == false)
+		 {
+			proxy = prox.proxyList.get(proxCounter);
+			proxCounter++;
+			ChromeOptions options = new ChromeOptions().addArguments("--proxy-server=http://" + proxy);
+			options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+			options.addArguments("--disable-extensions");
+			WebDriverManager.chromedriver().setup();
+			driver = new ChromeDriver(options);
+			driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+			System.out.println(proxy);
+			String[] IPandPort = proxy.split(":");
+			try 
 			{
+				driver.get("https://kith.com");
+				driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 				try
 				{
-					driver.get("https://kith.com");
-					System.out.println(driver.getTitle());
-					System.out.println("Success!");
-				}catch(TimeoutException e)
+					WebElement t = driver.findElement(By.className("neterror"));
+					System.out.println("NETERROR: Site could not be reached...");
+					System.out.println("Current Proxy: IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
+					System.out.println("Error could not connect... Retrying with another Proxy...");
+					driver.quit();
+					
+				}catch(NoSuchElementException e)
 				{
-					System.out.println("Error could not connect with proxy... Retrying");
-					System.out.println("FAILED PROXY: "+proxy);
-					driver.close();
-					run();
+					System.out.println("Success!");
+					connected = true;
+					driver.manage().timeouts().implicitlyWait(Integer.MAX_VALUE, TimeUnit.SECONDS);
 				}
+				
+			}catch(TimeoutException e)
+			{
+				System.out.println("Current Proxy: IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
+				System.out.println("Error could not connect... Retrying with another Proxy...");
+				driver.quit();
 			}
-		};
-		tryAgain.run();
-		
+		}
+		connected = false;   
 	}
 }
