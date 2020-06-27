@@ -15,8 +15,6 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -27,8 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Browser implements BasicSiteFunctions, Checkout
 {
@@ -42,14 +38,12 @@ public class Browser implements BasicSiteFunctions, Checkout
 	private final static String extension = "/collections/all/products.json?page=1&limit=250";
 	private final static HashMap<String, String[]> webMap = new HashMap<String, String[]>();
 	private final static ObjectMapper mapper = new ObjectMapper();
-	private final static ChromeOptions options = new ChromeOptions();
 	private static JsonNode jsonObject;
 
 	private ArrayList<String> keywords = new ArrayList<String>();
 	private String url;
 	private String variant;
 	private String sizeOption = null;
-	private int totalPages;
 	/*----------------Shared Variables between Threads-----------------*/
 	// -----------------------------------------------------------------//
 	public static volatile int bestPage = Integer.MAX_VALUE;
@@ -129,8 +123,8 @@ public class Browser implements BasicSiteFunctions, Checkout
 					int tmpProductCounter = jsonObject.get("products").size();
 					System.out.println(tmpProductCounter);
 					if (tmpProductCounter < 250)
-						totalPages = (tmpProductCounter + (productPerPage - 1))
-								/ productPerPage;
+					{
+					}
 					productSearch(tmpProductCounter, threadNum);
 				} catch (IOException | InterruptedException e)
 				{
@@ -166,7 +160,8 @@ public class Browser implements BasicSiteFunctions, Checkout
 		int tmpProductCounter = jsonObject.get("products").size();
 		System.out.println(tmpProductCounter);
 		if (tmpProductCounter < 250)
-			totalPages = (tmpProductCounter + (productPerPage - 1)) / productPerPage;
+		{
+		}
 		productSearch(tmpProductCounter, -1);
 	}
 	private void productSearch(int productNum, int threadNum)
