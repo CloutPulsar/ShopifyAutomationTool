@@ -334,107 +334,110 @@ public class Browser implements BasicSiteFunctions, Checkout
 			@Override
 			public void run() 
 			{
-				synchronized(this)
+				WebDriver threadDriver;
+				try 
 				{
-					try 
+					synchronized(this)
 					{
-						WebDriver threadDriver = prox.createDriver();
-						WebDriverWait wait = new WebDriverWait(threadDriver, 30);
-						threadDriver.get(checkoutURL);
-						wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
-						WebElement t = threadDriver.findElement(By.xpath("//main[@role='main']"));
-						t.findElement(By.name("checkout")).click();
-						wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
-						PageRefresherFix tryAgain = new PageRefresherFix() {
-							@Override
-							public void run()
-							{
-								try 
-								{
-									WebElement r = threadDriver.findElement(By.xpath("//main[@role='main']"));
-									r.findElement(By.name("checkout")).click();
-									wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
-								}
-								catch(StaleElementReferenceException e)
-								{
-									System.out.println("Stale Element Exception caught... Trying Again");
-									threadDriver.navigate().refresh();
-									wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
-									run();
-								}				
-							}
-						};
-						if(threadDriver.getTitle().toLowerCase().contains("cart"))
-								tryAgain.run();
-						String temp = getUrl().substring(getUrl().indexOf("//")+2, getUrl().indexOf("."));
-						switch (temp)
-						{
-							case "undefeated":
-								threadDriver.findElement(By.xpath("//input[@name='customer[email]']")).sendKeys(info.getLoginEmail());
-								Thread.sleep(delay);
-								threadDriver.findElement(By.xpath("//input[@type='password']")).sendKeys(info.getLoginPassword());
-								Thread.sleep(delay);
-								threadDriver.findElement(By.xpath("//input[@type='submit']")).click();
-								wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
-								break;
-							default:
-								try
-								{
-									t = threadDriver.findElement(By.xpath("//div[@data-step='stock_problems']"));
-									System.out.println("Error: Item is Out of Stock.");
-									return;
-
-
-								}catch(NoSuchElementException e)
-								{
-								}
-						}
-						threadDriver.findElement(By.xpath("//input[@type='email']")).sendKeys(info.getEmail());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][first_name]']")).sendKeys(info.getFName());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][last_name]']")).sendKeys(info.getLName());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][address1]']")).sendKeys(info.getAddress());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][address2]']")).sendKeys(info.getAddress2());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][city]']")).sendKeys(info.getCity());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][country]']")).sendKeys(info.getCountry_Region());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][province]']")).sendKeys(info.getState());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][zip]']")).sendKeys(info.getZIP_code());
-						Thread.sleep(delay);
-						threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][phone]']")).sendKeys(info.getPhone());
-						threadDriver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='step__footer__continue-btn btn']")));
-						threadDriver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
-						wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@class='card-fields-iframe']")));
-						List<WebElement> paymentInfo = threadDriver.findElements(By.xpath("//iframe[@class='card-fields-iframe']"));
-						threadDriver.switchTo().frame(paymentInfo.get(0));
-						Thread.sleep(600);
-						threadDriver.findElement(By.xpath("//input[@autocomplete='cc-number']")).sendKeys(info.getCCNumber());
-						Thread.sleep(delay);
-						threadDriver.switchTo().parentFrame();
-						threadDriver.switchTo().frame(paymentInfo.get(1));
-						threadDriver.findElement(By.xpath("//input[@autocomplete='cc-name']")).sendKeys(info.getCCName());
-						Thread.sleep(delay);
-						threadDriver.switchTo().parentFrame();
-						threadDriver.switchTo().frame(paymentInfo.get(2));
-						threadDriver.findElement(By.xpath("//input[@autocomplete='cc-exp']")).sendKeys(info.getCCExp());
-						Thread.sleep(delay);
-						threadDriver.switchTo().parentFrame();
-						threadDriver.switchTo().frame(paymentInfo.get(3));
-						threadDriver.findElement(By.xpath("//input[@autocomplete='cc-csc']")).sendKeys(info.getCsc());
-						Thread.sleep(delay);
-						threadDriver.switchTo().parentFrame();
-						threadDriver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();	
-					}catch(InterruptedException  |TimeoutException  | StaleElementReferenceException | IOException e)
-					{
-						System.out.println("Caught Error: "+e);
+						threadDriver = prox.createDriver();
 					}
+					WebDriverWait wait = new WebDriverWait(threadDriver, 30);
+					threadDriver.get(checkoutURL);
+					wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
+					WebElement t = threadDriver.findElement(By.xpath("//main[@role='main']"));
+					t.findElement(By.name("checkout")).click();
+					wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
+					PageRefresherFix tryAgain = new PageRefresherFix() {
+						@Override
+						public void run()
+						{
+							try 
+							{
+								WebElement r = threadDriver.findElement(By.xpath("//main[@role='main']"));
+								r.findElement(By.name("checkout")).click();
+								wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
+							}
+							catch(StaleElementReferenceException e)
+							{
+								System.out.println("Stale Element Exception caught... Trying Again");
+								threadDriver.navigate().refresh();
+								wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
+								run();
+							}				
+						}
+					};
+					if(threadDriver.getTitle().toLowerCase().contains("cart"))
+							tryAgain.run();
+					String temp = getUrl().substring(getUrl().indexOf("//")+2, getUrl().indexOf("."));
+					switch (temp)
+					{
+						case "undefeated":
+							threadDriver.findElement(By.xpath("//input[@name='customer[email]']")).sendKeys(info.getLoginEmail());
+							Thread.sleep(delay);
+							threadDriver.findElement(By.xpath("//input[@type='password']")).sendKeys(info.getLoginPassword());
+							Thread.sleep(delay);
+							threadDriver.findElement(By.xpath("//input[@type='submit']")).click();
+							wait.until(driver -> ((JavascriptExecutor) threadDriver).executeScript("return document.readyState").equals("complete"));
+							break;
+						default:
+							try
+							{
+								t = threadDriver.findElement(By.xpath("//div[@data-step='stock_problems']"));
+								System.out.println("Error: Item is Out of Stock.");
+								return;
+
+
+							}catch(NoSuchElementException e)
+							{
+							}
+					}
+					threadDriver.findElement(By.xpath("//input[@type='email']")).sendKeys(info.getEmail());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][first_name]']")).sendKeys(info.getFName());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][last_name]']")).sendKeys(info.getLName());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][address1]']")).sendKeys(info.getAddress());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][address2]']")).sendKeys(info.getAddress2());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][city]']")).sendKeys(info.getCity());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][country]']")).sendKeys(info.getCountry_Region());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][province]']")).sendKeys(info.getState());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][zip]']")).sendKeys(info.getZIP_code());
+					Thread.sleep(delay);
+					threadDriver.findElement(By.xpath("//input[@name='checkout[shipping_address][phone]']")).sendKeys(info.getPhone());
+					threadDriver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[@class='step__footer__continue-btn btn']")));
+					threadDriver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+					wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//iframe[@class='card-fields-iframe']")));
+					List<WebElement> paymentInfo = threadDriver.findElements(By.xpath("//iframe[@class='card-fields-iframe']"));
+					threadDriver.switchTo().frame(paymentInfo.get(0));
+					Thread.sleep(600);
+					threadDriver.findElement(By.xpath("//input[@autocomplete='cc-number']")).sendKeys(info.getCCNumber());
+					Thread.sleep(delay);
+					threadDriver.switchTo().parentFrame();
+					threadDriver.switchTo().frame(paymentInfo.get(1));
+					threadDriver.findElement(By.xpath("//input[@autocomplete='cc-name']")).sendKeys(info.getCCName());
+					Thread.sleep(delay);
+					threadDriver.switchTo().parentFrame();
+					threadDriver.switchTo().frame(paymentInfo.get(2));
+					threadDriver.findElement(By.xpath("//input[@autocomplete='cc-exp']")).sendKeys(info.getCCExp());
+					Thread.sleep(delay);
+					threadDriver.switchTo().parentFrame();
+					threadDriver.switchTo().frame(paymentInfo.get(3));
+					threadDriver.findElement(By.xpath("//input[@autocomplete='cc-csc']")).sendKeys(info.getCsc());
+					Thread.sleep(delay);
+					threadDriver.switchTo().parentFrame();
+					threadDriver.findElement(By.xpath("//button[@class='step__footer__continue-btn btn']")).click();
+					threadDriver.quit();
+					System.out.println(Thread.currentThread().getName()+" has finished checkout...");
+				}catch(InterruptedException  |TimeoutException  | IOException e)
+				{
+					System.out.println("Caught Error: "+e);
 				}
 			}
 		};
@@ -446,9 +449,8 @@ public class Browser implements BasicSiteFunctions, Checkout
 			threadID++;
 			System.out.println(thread[i].getName() + " has been initiated for checkout.");
 		}
-		int i =0;
-		while(thread[i].isAlive())
-			thread[i].join();
+		for(Thread s : thread)
+			s.join();
 	}
 	public void loadCheckoutVariant(clientInfo info) throws InterruptedException
 	{

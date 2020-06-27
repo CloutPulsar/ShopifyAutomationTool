@@ -1,37 +1,28 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class Proxies
 {
 	public int threadID = 0;
 	public int threads = 2;
-	public static volatile int successcount =0;
 	private static volatile int proxCounter = 0;
 	private static volatile String proxy;
 	private static volatile boolean connected = false;
-	private ArrayList<String> proxyList;
+	private static volatile ArrayList<String> proxyList;
 	private static WebDriver driver;
 	public Proxies() throws InterruptedException
 	{
@@ -66,46 +57,19 @@ public class Proxies
 		WebDriverManager.chromedriver().setup();
 		return new ChromeDriver(options);
 	}
-	private String testConnection() throws MalformedURLException, IOException
+	private String testConnection() throws MalformedURLException, IOException, InterruptedException
 	{
 		String data = null;
-		while(proxCounter < proxyList.size()) 
-		{
-			String tmp = proxyList.get(proxCounter);
-			String[] IPandPort = tmp.split(":");
-			proxyList.remove(proxCounter);
-			proxCounter++;
-			Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(IPandPort[0], Integer.parseInt(IPandPort[1])));
-			try
-			{
-				URLConnection conn = new URL("https://google.com").openConnection(proxy);
-				conn.addRequestProperty("User-Agent", "Mozilla");
-				conn.setConnectTimeout(3000);
-				data = tmp;
-				System.out.println("Successfully Connected.");
-				break;
-			}catch(ConnectException e)
-			{
-				System.out.println("Current Proxy: IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
-				System.out.println("Error could not connect... Retrying with another Proxy...");
-			}
-		}
-		return data;
-	}
-	public static void main(String[] args) throws InterruptedException
-	{
-		Proxies prox = new Proxies();
-		
-		 while(connected == false)
+		while(connected == false)
 		 {
-			proxy = prox.proxyList.get(proxCounter);
-			proxCounter++;
+			proxy = Proxies.proxyList.get(proxCounter);
+			Proxies.proxyList.remove(proxCounter);
 			ChromeOptions options = new ChromeOptions().addArguments("--proxy-server=http://" + proxy);
 			options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
 			options.addArguments("--disable-extensions");
 			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver(options);
-			driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
+			driver.manage().timeouts().pageLoadTimeout(80, TimeUnit.SECONDS);
 			System.out.println(proxy);
 			String[] IPandPort = proxy.split(":");
 			try 
@@ -118,22 +82,23 @@ public class Proxies
 					System.out.println("NETERROR: Site could not be reached...");
 					System.out.println("Current Proxy: IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
 					System.out.println("Error could not connect... Retrying with another Proxy...");
-					driver.quit();
 					
 				}catch(NoSuchElementException e)
 				{
 					System.out.println("Success!");
 					connected = true;
 					driver.manage().timeouts().implicitlyWait(Integer.MAX_VALUE, TimeUnit.SECONDS);
+					data = proxy;
 				}
 				
 			}catch(TimeoutException e)
 			{
 				System.out.println("Current Proxy: IP Address: "+IPandPort[0]+"\t Port #: "+IPandPort[1]);
 				System.out.println("Error could not connect... Retrying with another Proxy...");
-				driver.quit();
 			}
+			driver.quit();
 		}
 		connected = false;   
+		return data;
 	}
 }
