@@ -94,11 +94,9 @@ public class Proxies
 	public static void main(String[] args) throws InterruptedException
 	{
 		Proxies prox = new Proxies();
-		String proxy = prox.proxyList.get(8);
+		String proxy = "35.192.37.211:3218";
 		System.out.println(proxy);
 		ChromeOptions options = new ChromeOptions().addArguments("--proxy-server=http://" + proxy);
-		options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
-		options.addArguments("--disable-extensions");
 		WebDriverManager.chromedriver().setup();
 		WebDriver driver = new ChromeDriver(options);
 		WebDriverWait wait = new WebDriverWait(driver, 5);
