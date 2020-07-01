@@ -35,7 +35,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	public final static int productPerPage = 30;
 	public int threadID = 0;
 	private final int availableThreads = Runtime.getRuntime().availableProcessors();
-	private final static String extension = "/collections/all/products.json?page=1&limit=250";
+	private final static String extension = "/products.json?page=1&limit=250";
 	private final static HashMap<String, String[]> webMap = new HashMap<String, String[]>();
 	private final static ObjectMapper mapper = new ObjectMapper();
 	private static JsonNode jsonObject;
@@ -48,6 +48,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	// -----------------------------------------------------------------//
 	public static volatile int bestPage = Integer.MAX_VALUE;
 	public static volatile int globalMax = Integer.MIN_VALUE;
+	private static int tasks;
 	private static volatile int notifier = 0;
 	// ------------------------------------------------------------------//
 	/*-----------------------------------------------------------------*/
@@ -122,9 +123,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 					jsonObject = mapper.readTree(JSON);
 					int tmpProductCounter = jsonObject.get("products").size();
 					System.out.println(tmpProductCounter);
-					if (tmpProductCounter < 250)
-					{
-					}
 					productSearch(tmpProductCounter, threadNum);
 				} catch (IOException | InterruptedException e)
 				{
@@ -132,7 +130,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				}
 			}
 		};
-		for (int i = 0; i < ((availableThreads > 5) ? 5: availableThreads); i++)
+		for (int i = 0; i < (tasks = ((availableThreads > 10) ? availableThreads: 10)); i++)
 		{
 			thread[i] = new Thread(runnable, ("Thread " + (2 + i)));
 			thread[i].start();
@@ -159,9 +157,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 		// where i is the i-th product.
 		int tmpProductCounter = jsonObject.get("products").size();
 		System.out.println(tmpProductCounter);
-		if (tmpProductCounter < 250)
-		{
-		}
 		productSearch(tmpProductCounter, -1);
 	}
 	private void productSearch(int productNum, int threadNum)
@@ -170,7 +165,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 		int productNumber = 0;
 		int max = Integer.MIN_VALUE;
 		int[] productIndex = new int[productNum];
-		String[] handle, tags;
+		String handle, tags,vendor, title;
 		if (threadNum == -1)
 			start = System.currentTimeMillis();
 		for (JsonNode product : jsonObject.get("products"))
@@ -180,20 +175,21 @@ public class Browser implements BasicSiteFunctions, Checkout
 					product.get("variants").get(0).get("price").asText());
 			if (price >= priceRange[0] && price <= priceRange[1])
 			{
-				handle = product.get("handle").toString().toLowerCase()
-						.replace("\"", "").split("-");
-				tags = product.get("tags").toString().toLowerCase()
-						.replaceAll("[\\[\\]\\s\"]", "").split(",");
-				ArrayList<String> productWords = new ArrayList<String>(
-						Arrays.asList(handle));
-				productWords.addAll(Arrays.asList(tags));
+				//handle = product.get("handle").toString().toLowerCase()
+				//		.replace("\"", "").split("-");
+				//tags = product.get("tags").toString().toLowerCase()
+				//		.replaceAll("[\\[\\]\\s\"]", "").split(",");
+				title = product.get("title").toString().toLowerCase();
+				handle = product.get("handle").toString().toLowerCase();
+				tags = product.get("tags").toString().toLowerCase();
+				vendor = product.get("vendor").toString().toLowerCase();
+				String keywordList = title + handle + tags + vendor;
 				for (String keyword : keywords)
-				{
-					if (productWords.contains(keyword) && keyword != "")
-					{
+				{	
+					if(keyword == null)
+						break;
+					else if (keywordList.contains(keyword.toLowerCase()) && keyword != "")
 						count++;
-						productWords.remove(keyword);
-					}
 					if (max < count)
 						max = count;
 				}
@@ -225,7 +221,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				this.notify();
 				return;
 			}
-			while(notifier != 5)
+			while(notifier != tasks)
 				this.wait();
 		}
 		String newUrl = getUrl() + extension.replace("page=1", "page=" + bestPage);
@@ -256,7 +252,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	}
 	public String getUrl()
 	{
-		return url.substring(0, url.indexOf("/collections"));
+		return url.substring(0, url.indexOf("/products"));
 	}
 	private int pageCount()
 	{
@@ -379,6 +375,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 							{
 								t = threadDriver.findElement(By.xpath("//div[@data-step='stock_problems']"));
 								System.out.println("Error: Item is Out of Stock.");
+								threadDriver.quit();
 								return;
 
 
@@ -436,7 +433,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				}
 			}
 		};
-		for (int i = 0; i < ((availableThreads > 5) ? 5: availableThreads); i++)
+		for (int i = 0; i < tasks; i++)
 		{
 			thread[i] = new Thread(multiCheckout, ("Thread " + (2 + i)));
 			thread[i].start();
