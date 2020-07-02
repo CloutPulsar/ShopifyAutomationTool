@@ -1,6 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.mainGui">
+   <children>
+      <TextField layoutX="218.0" layoutY="188.0" promptText="         Enter your key" style="-fx-background-color: #0f1b29; -fx-background-radius: 10;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="186.0" fitWidth="198.0" layoutX="194.0">
+         <image>
+            <Image url="@../../../../../../../photoshop%20stuff/helix%20logo.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="258.0" layoutY="240.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="74.0" style="-fx-background-color: #19293c; -fx-background-radius: 5;" text="Activate" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow level="0.39" />
+         </effect>
+      </Button>
+      <Label layoutX="535.0" layoutY="384.0" text="Beta v0.0.1" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button layoutX="-4.0" layoutY="-3.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="0.0" style="-fx-background-color: #ffffff00;">
+         <graphic>
+            <ImageView fitHeight="11.0" fitWidth="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../../photoshop%20stuff/exit%20button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button layoutX="18.0" layoutY="-3.0" mnemonicParsing="false" style="-fx-background-color: #ffffff00;">
+         <graphic>
+            <ImageView fitHeight="11.0" fitWidth="11.0">
+               <image>
+                  <Image url="@../../../../../../../photoshop%20stuff/mini%20button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>

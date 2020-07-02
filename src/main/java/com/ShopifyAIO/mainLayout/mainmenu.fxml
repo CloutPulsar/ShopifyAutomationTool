@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1387.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="-1.0" layoutY="-11.0" prefHeight="751.0" prefWidth="94.0" style="-fx-background-color: #121f2e;">
+         <children>
+            <Separator layoutX="90.0" layoutY="10.0" opacity="0.13" orientation="VERTICAL" prefHeight="741.0" prefWidth="6.0" style="-fx-background-color: #07111d;" />
+         </children>
+      </Pane>
+      <ImageView fitHeight="120.0" fitWidth="125.0" layoutX="-19.0" layoutY="-5.0">
+         <image>
+            <Image url="@../../../../../../../photoshop%20stuff/helix%20logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="1343.0" layoutY="721.0" text=" v0.0.1" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button layoutX="1218.0" layoutY="717.0" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text="Check for Updates" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Pane layoutX="120.0" layoutY="111.0" prefHeight="75.0" prefWidth="1235.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 15;" />
+   </children>
+</AnchorPane>

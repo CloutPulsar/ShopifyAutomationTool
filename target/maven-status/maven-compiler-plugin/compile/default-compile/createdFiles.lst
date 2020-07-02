@@ -1,11 +1,11 @@
-clientInfo.class
 Browser$PageRefresherFix.class
+clientInfo.class
 Browser$1.class
-com/ShopifyAIO/mainLayout/mainGui.class
 BasicSiteFunctions.class
 Browser$2$1.class
 Proxies.class
 Element.class
 Browser.class
 Checkout.class
+com\ShopifyAIO\mainLayout\mainGui.class
 Browser$2.class
