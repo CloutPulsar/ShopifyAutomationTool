@@ -36,6 +36,44 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Pane layoutX="120.0" layoutY="111.0" prefHeight="75.0" prefWidth="1235.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 15;" />
+      <Pane layoutX="120.0" layoutY="123.0" prefHeight="63.0" prefWidth="1235.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
+         <children>
+            <Label layoutX="45.0" layoutY="23.0" text="Site" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="211.0" layoutY="23.0" text="Product" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="427.0" layoutY="23.0" text="Profile" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="594.0" layoutY="23.0" text="Proxies" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="777.0" layoutY="23.0" text="Size" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="947.0" layoutY="24.0" text="Status" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="1114.0" layoutY="24.0" text="Actions" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
