@@ -2,22 +2,24 @@
 <testng-results ignored="0" total="1" passed="0" failed="1" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2020-06-29T11:51:03 PDT" name="Default suite" finished-at="2020-06-29T11:54:52 PDT" duration-ms="228594">
+  <suite started-at="2020-07-09T19:02:25 PDT" name="Default suite" finished-at="2020-07-09T19:02:25 PDT" duration-ms="46">
     <groups>
     </groups>
-    <test started-at="2020-06-29T11:51:03 PDT" name="Default test" finished-at="2020-06-29T11:54:52 PDT" duration-ms="228594">
+    <test started-at="2020-07-09T19:02:25 PDT" name="Default test" finished-at="2020-07-09T19:02:25 PDT" duration-ms="46">
       <class name="TestBrowser">
-        <test-method is-config="true" signature="initialUrlTest()[pri:0, instance:TestBrowser@6a2b953e]" started-at="2020-06-29T11:51:03 PDT" name="initialUrlTest" finished-at="2020-06-29T11:51:03 PDT" duration-ms="6" status="PASS">
+        <test-method is-config="true" signature="initialUrlTest()[pri:0, instance:TestBrowser@50f6ac94]" started-at="2020-07-09T19:02:25 PDT" name="initialUrlTest" finished-at="2020-07-09T19:02:25 PDT" duration-ms="8" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- initialUrlTest -->
-        <test-method signature="loadBrowserTest()[pri:0, instance:TestBrowser@6a2b953e]" started-at="2020-06-29T11:51:03 PDT" name="loadBrowserTest" finished-at="2020-06-29T11:54:52 PDT" duration-ms="228571" status="FAIL">
-          <exception class="java.lang.NullPointerException">
+        <test-method signature="loadBrowserTest()[pri:0, instance:TestBrowser@50f6ac94]" started-at="2020-07-09T19:02:25 PDT" name="loadBrowserTest" finished-at="2020-07-09T19:02:25 PDT" duration-ms="17" status="FAIL">
+          <exception class="java.lang.ArrayIndexOutOfBoundsException">
+            <message>
+              <![CDATA[Index 6 out of bounds for length 6]]>
+            </message>
             <full-stacktrace>
-              <![CDATA[java.lang.NullPointerException
-at Browser.loadCheckoutVariantImplementation(Browser.java:445)
-at Browser.loadCheckoutVariant(Browser.java:449)
-at TestBrowser.loadBrowserTest(TestBrowser.java:51)
+              <![CDATA[java.lang.ArrayIndexOutOfBoundsException: Index 6 out of bounds for length 6
+at Browser.initiateSearch(Browser.java:135)
+at TestBrowser.loadBrowserTest(TestBrowser.java:47)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -48,7 +50,7 @@ at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 ]]>
             </full-stacktrace>
-          </exception> <!-- java.lang.NullPointerException -->
+          </exception> <!-- java.lang.ArrayIndexOutOfBoundsException -->
           <reporter-output>
           </reporter-output>
         </test-method> <!-- loadBrowserTest -->

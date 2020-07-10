@@ -57,9 +57,9 @@ function toggleAllBoxes() {
 <tr>
 <td>Tests passed/Failed/Skipped:</td><td>0/1/0</td>
 </tr><tr>
-<td>Started on:</td><td>Mon Jun 29 11:51:03 PDT 2020</td>
+<td>Started on:</td><td>Thu Jul 09 19:02:25 PDT 2020</td>
 </tr>
-<tr><td>Total time:</td><td>228 seconds (228594 ms)</td>
+<tr><td>Total time:</td><td>0 seconds (46 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -76,10 +76,9 @@ function toggleAllBoxes() {
 </tr>
 <tr>
 <td title='TestBrowser.loadBrowserTest()'><b>loadBrowserTest</b><br>Test class: TestBrowser</td>
-<td><div><pre>java.lang.NullPointerException
-	at Browser.loadCheckoutVariantImplementation(Browser.java:445)
-	at Browser.loadCheckoutVariant(Browser.java:449)
-	at TestBrowser.loadBrowserTest(TestBrowser.java:51)
+<td><div><pre>java.lang.ArrayIndexOutOfBoundsException: Index 6 out of bounds for length 6
+	at Browser.initiateSearch(Browser.java:135)
+	at TestBrowser.loadBrowserTest(TestBrowser.java:47)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -108,11 +107,10 @@ function toggleAllBoxes() {
 	at org.testng.remote.AbstractRemoteTestNG.run(AbstractRemoteTestNG.java:115)
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
-</pre></div><a href='#' onClick='toggleBox("stack-trace1894601438", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
-<div class='stack-trace' id='stack-trace1894601438'><pre>java.lang.NullPointerException
-	at Browser.loadCheckoutVariantImplementation(Browser.java:445)
-	at Browser.loadCheckoutVariant(Browser.java:449)
-	at TestBrowser.loadBrowserTest(TestBrowser.java:51)
+</pre></div><a href='#' onClick='toggleBox("stack-trace1176968662", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1176968662'><pre>java.lang.ArrayIndexOutOfBoundsException: Index 6 out of bounds for length 6
+	at Browser.initiateSearch(Browser.java:135)
+	at TestBrowser.loadBrowserTest(TestBrowser.java:47)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
@@ -142,8 +140,8 @@ function toggleAllBoxes() {
 	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:251)
 	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:77)
 </pre></div></td>
-<td>228</td>
-<td>TestBrowser@6a2b953e</td></tr>
+<td>0</td>
+<td>TestBrowser@50f6ac94</td></tr>
 </table><p>
 </body>
 </html>

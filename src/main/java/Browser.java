@@ -55,7 +55,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	private int[] priceRange = {Integer.MIN_VALUE, Integer.MAX_VALUE};
 	private Object[] bestProduct;
 	private boolean validVariant = false;
-	private Thread[] thread = new Thread[availableThreads];
+	private Thread[] thread = new Thread[20];
 	long start, end;
 
 	public static String[] sites;
@@ -130,7 +130,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				}
 			}
 		};
-		for (int i = 0; i < (tasks = ((availableThreads > 10) ? availableThreads: 10)); i++)
+		for (int i = 0; i < (tasks = ((availableThreads > 10) ? availableThreads: availableThreads)); i++)
 		{
 			thread[i] = new Thread(runnable, ("Thread " + (2 + i)));
 			thread[i].start();

@@ -9,14 +9,13 @@
 <table>
 <tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Retried</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr>
 <tr><th colspan="8">Default suite</th></tr>
-<tr><td><a href="#t0">Default test</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">228,594</td><td></td><td></td></tr>
+<tr><td><a href="#t0">Default test</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">46</td><td></td><td></td></tr>
 </table>
-<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Default suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Default test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">TestBrowser</td><td><a href="#m0">loadBrowserTest</a></td><td rowspan="1">1593456663802</td><td rowspan="1">228571</td></tr></tbody>
+<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Default suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">Default test &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">TestBrowser</td><td><a href="#m0">loadBrowserTest</a></td><td rowspan="1">1594346545810</td><td rowspan="1">17</td></tr></tbody>
 </table>
-<h2>Default test</h2><h3 id="m0">TestBrowser#loadBrowserTest</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">java.lang.NullPointerException
-	at Browser.loadCheckoutVariantImplementation(Browser.java:445)
-	at Browser.loadCheckoutVariant(Browser.java:449)
-	at TestBrowser.loadBrowserTest(TestBrowser.java:51)
+<h2>Default test</h2><h3 id="m0">TestBrowser#loadBrowserTest</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">java.lang.ArrayIndexOutOfBoundsException: Index 6 out of bounds for length 6
+	at Browser.initiateSearch(Browser.java:135)
+	at TestBrowser.loadBrowserTest(TestBrowser.java:47)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

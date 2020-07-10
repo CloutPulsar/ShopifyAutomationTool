@@ -21,7 +21,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0">
                      <image>
-                        <Image url="@../../../../resources/profile.png" />
+                        <Image url="@profile.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -34,7 +34,7 @@
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0">
                      <image>
-                        <Image url="@../../../../resources/home-house-building-page-city-casa-old-vintage-46266.png" />
+                        <Image url="@home-house-building-page-city-casa-old-vintage-46266.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -46,7 +46,7 @@
                <graphic>
                   <ImageView fitHeight="21.0" fitWidth="21.0">
                      <image>
-                        <Image url="@../../../../resources/account.png" />
+                        <Image url="@account.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -58,7 +58,7 @@
                <graphic>
                   <ImageView fitHeight="25.0" fitWidth="25.0">
                      <image>
-                        <Image url="@../../../../resources/settings.png" />
+                        <Image url="@settings.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -70,7 +70,7 @@
                <graphic>
                   <ImageView fitHeight="20.0" fitWidth="20.0">
                      <image>
-                        <Image url="@../../../../resources/proxy.png" />
+                        <Image url="@proxy.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -99,7 +99,7 @@
       </Pane>
       <ImageView fitHeight="120.0" fitWidth="125.0" layoutX="-19.0" layoutY="-5.0" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="-19.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="-5.0">
          <image>
-            <Image url="@../../../../resources/helix%20logo.png" />
+            <Image url="@helix%20logo.png" />
          </image>
       </ImageView>
       <Label layoutX="1335.0" layoutY="721.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="17.0" prefWidth="53.0" text=" v0.0.1" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="1335.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="721.0">
