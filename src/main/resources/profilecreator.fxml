@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="872.0" style="-fx-background-color: #0b1729; -fx-border-radius: 10;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Pane layoutX="43.0" layoutY="35.0" prefHeight="41.0" prefWidth="808.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;" AnchorPane.bottomAnchor="539.0" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="35.0">
+         <children>
+            <Label alignment="CENTER" layoutX="286.0" layoutY="13.0" text="Create Profile" textFill="WHITE">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <AnchorPane layoutX="14.0" layoutY="84.0" prefHeight="528.0" prefWidth="445.0">
+         <children>
+            <TextField alignment="CENTER" layoutX="14.0" layoutY="21.0" prefHeight="27.0" prefWidth="398.0" style="-fx-background-color: #162638; -fx-background-radius: 5;" AnchorPane.bottomAnchor="480.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="21.0">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </TextField>
+            <Text fill="WHITE" layoutX="16.0" layoutY="16.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile Name">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </Text>
+            <TextField alignment="CENTER" layoutX="18.0" layoutY="49.0" prefHeight="15.0" prefWidth="95.0" style="-fx-background-color: #162638; -fx-background-radius: 5;">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </TextField>
+            <TextField alignment="CENTER" layoutX="161.0" layoutY="49.0" prefHeight="15.0" prefWidth="95.0" style="-fx-background-color: #162638; -fx-background-radius: 5;">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </TextField>
+            <Text fill="WHITE" layoutX="157.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="15.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </Text>
+            <Text fill="WHITE" layoutX="16.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </Text>
+            <TextField alignment="CENTER" layoutX="14.0" layoutY="133.0" prefHeight="15.0" prefWidth="241.0" style="-fx-background-color: #162638; -fx-background-radius: 5;">
+               <font>
+                  <Font name="System Bold" size="7.0" />
+               </font>
+            </TextField>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="436.0" layoutY="82.0" prefHeight="528.0" prefWidth="434.0" />
+   </children>
+</AnchorPane>

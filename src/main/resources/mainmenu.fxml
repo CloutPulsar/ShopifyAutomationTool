@@ -12,9 +12,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1387.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane layoutX="-1.0" layoutY="-11.0" prefHeight="751.0" prefWidth="94.0" style="-fx-background-color: #121f2e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1294.0" AnchorPane.topAnchor="-11.0">
+      <Pane layoutX="-1.0" layoutY="-11.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="751.0" prefWidth="99.0" style="-fx-background-color: #121f2e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1294.0" AnchorPane.topAnchor="-11.0">
          <children>
-            <Separator layoutX="90.0" layoutY="10.0" opacity="0.13" orientation="VERTICAL" prefHeight="741.0" prefWidth="6.0" style="-fx-background-color: #07111d;" />
+            <Separator layoutX="90.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.13" orientation="VERTICAL" prefHeight="741.0" prefWidth="6.0" style="-fx-background-color: #07111d;" />
          </children>
       </Pane>
       <ImageView fitHeight="120.0" fitWidth="125.0" layoutX="-19.0" layoutY="-5.0" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="-19.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="-5.0">
@@ -22,12 +22,12 @@
             <Image url="@../../../../resources/helix%20logo.png" />
          </image>
       </ImageView>
-      <Label layoutX="1343.0" layoutY="721.0" text=" v0.0.1" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="1343.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="721.0">
+      <Label layoutX="1335.0" layoutY="721.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="17.0" prefWidth="53.0" text=" v0.0.1" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="1335.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="721.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="1218.0" layoutY="717.0" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text="Check for Updates" textFill="WHITE" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="1218.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="717.0">
+      <Button layoutX="1195.0" layoutY="717.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="143.0" style="-fx-background-color: #ffffff00;" text="Check for Updates" textFill="WHITE" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="1195.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="717.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
