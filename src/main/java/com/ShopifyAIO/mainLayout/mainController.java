@@ -1,14 +1,22 @@
 package com.ShopifyAIO.mainLayout;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.NoSuchPaddingException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
@@ -20,6 +28,8 @@ public class mainController
 	private double xOffset = 0;
 	private double yOffset = 0;
 	private Stage stage;
+	private mainModel model = new mainModel();
+	private static StringBuilder authKey = new StringBuilder();
 
 	@FXML
 	private TextField authField;
@@ -60,25 +70,41 @@ public class mainController
 	}
 
 	@FXML
-	private void handleActivateButton(ActionEvent event)
+	private void handleActivateButton(ActionEvent event) throws ClientProtocolException, IOException, InterruptedException, ClassNotFoundException
 	{
+		responseLabel.setVisible(true);
 		if (authField.getText().isEmpty())
 		{
 			responseLabel.setText("Invalid Key! Please Try Again");
 			responseLabel.setTextAlignment(TextAlignment.CENTER);
 			responseLabel.setTextFill(Color.web("#fc0303"));
-			responseLabel.setVisible(true);
 		} else
 		{
-			responseLabel.setVisible(false);
-			System.out.println("Success");
+			responseLabel.setText("Connecting to database...");
+			responseLabel.setTextFill(Color.web("#03fcf4"));
+			authKey.append(authField.getText());
+			if(model.sendandrecvAuth(authKey.toString()) == true)
+			{
+				responseLabel.setText("Authentication Successful!");
+				responseLabel.setTextFill(Color.web("#03fc03"));
+				Thread.sleep(1500);
+				Stage stage = (Stage) responseLabel.getScene().getWindow();
+				stage.setScene(model.getNextWindow());
+				
+			}else
+			{
+				responseLabel.setText("Authentication Unsuccessful!");
+				responseLabel.setTextFill(Color.web("#fc6703"));
+				authKey.setLength(0);
+			}
 		}
 	}
 
 	@FXML
-	void handleCloseBtn(ActionEvent event)
+	void handleCloseBtn(ActionEvent event) throws UnsupportedEncodingException, UnknownHostException, SocketException
 	{
 		stage = (Stage) closeBtn.getScene().getWindow();
+		model.restoreKey(authKey.toString());
 		stage.close();
 	}
 

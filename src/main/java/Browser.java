@@ -130,7 +130,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				}
 			}
 		};
-		for (int i = 0; i < (tasks = ((availableThreads > 10) ? availableThreads: availableThreads)); i++)
+		for (int i = 0; i < (tasks = ((availableThreads > 20) ? 20: availableThreads)); i++)
 		{
 			thread[i] = new Thread(runnable, ("Thread " + (2 + i)));
 			thread[i].start();

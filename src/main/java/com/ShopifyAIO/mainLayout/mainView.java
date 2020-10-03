@@ -15,8 +15,8 @@ public class mainView extends Application
 	@Override
 	public void start(Stage primaryStage) throws IOException
 	{
-		Parent root = FXMLLoader.load(getClass().getResource("/mainFXML.fxml"));
-		primaryStage.setScene(new Scene(root));
+		Parent login = FXMLLoader.load(getClass().getResource("/mainFXML.fxml"));
+		primaryStage.setScene(new Scene(login));
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.show();
 	}
