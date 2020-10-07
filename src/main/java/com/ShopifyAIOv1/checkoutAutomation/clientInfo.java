@@ -1,3 +1,4 @@
+package com.ShopifyAIOv1.checkoutAutomation;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;

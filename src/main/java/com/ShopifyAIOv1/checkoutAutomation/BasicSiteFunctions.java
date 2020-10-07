@@ -1,3 +1,4 @@
+package com.ShopifyAIOv1.checkoutAutomation;
 import java.util.ArrayList;
 
 public interface BasicSiteFunctions

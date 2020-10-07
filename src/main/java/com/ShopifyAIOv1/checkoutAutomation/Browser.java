@@ -1,3 +1,4 @@
+package com.ShopifyAIOv1.checkoutAutomation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,8 +16,6 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,8 +27,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 public class Browser implements BasicSiteFunctions, Checkout
 {
 	public class PageRefresherFix
@@ -39,28 +36,27 @@ public class Browser implements BasicSiteFunctions, Checkout
 	public final static int productPerPage = 30;
 	public int threadID = 0;
 	private final int availableThreads = Runtime.getRuntime().availableProcessors();
-	private final static String extension = "/collections/all/products.json?page=1&limit=250";
+	private final static String extension = "/products.json?page=1&limit=250";
 	private final static HashMap<String, String[]> webMap = new HashMap<String, String[]>();
 	private final static ObjectMapper mapper = new ObjectMapper();
-	private final static ChromeOptions options = new ChromeOptions();
 	private static JsonNode jsonObject;
 
 	private ArrayList<String> keywords = new ArrayList<String>();
 	private String url;
 	private String variant;
 	private String sizeOption = null;
-	private int totalPages;
 	/*----------------Shared Variables between Threads-----------------*/
 	// -----------------------------------------------------------------//
 	public static volatile int bestPage = Integer.MAX_VALUE;
 	public static volatile int globalMax = Integer.MIN_VALUE;
+	private static int tasks;
 	private static volatile int notifier = 0;
 	// ------------------------------------------------------------------//
 	/*-----------------------------------------------------------------*/
 	private int[] priceRange = {Integer.MIN_VALUE, Integer.MAX_VALUE};
 	private Object[] bestProduct;
 	private boolean validVariant = false;
-	private Thread[] thread = new Thread[availableThreads];
+	private Thread[] thread = new Thread[20];
 	long start, end;
 
 	public static String[] sites;
@@ -128,9 +124,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 					jsonObject = mapper.readTree(JSON);
 					int tmpProductCounter = jsonObject.get("products").size();
 					System.out.println(tmpProductCounter);
-					if (tmpProductCounter < 250)
-						totalPages = (tmpProductCounter + (productPerPage - 1))
-								/ productPerPage;
 					productSearch(tmpProductCounter, threadNum);
 				} catch (IOException | InterruptedException e)
 				{
@@ -138,7 +131,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				}
 			}
 		};
-		for (int i = 0; i < ((availableThreads > 5) ? 5: availableThreads); i++)
+		for (int i = 0; i < (tasks = ((availableThreads > 20) ? 20: availableThreads)); i++)
 		{
 			thread[i] = new Thread(runnable, ("Thread " + (2 + i)));
 			thread[i].start();
@@ -165,8 +158,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 		// where i is the i-th product.
 		int tmpProductCounter = jsonObject.get("products").size();
 		System.out.println(tmpProductCounter);
-		if (tmpProductCounter < 250)
-			totalPages = (tmpProductCounter + (productPerPage - 1)) / productPerPage;
 		productSearch(tmpProductCounter, -1);
 	}
 	private void productSearch(int productNum, int threadNum)
@@ -175,7 +166,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 		int productNumber = 0;
 		int max = Integer.MIN_VALUE;
 		int[] productIndex = new int[productNum];
-		String[] handle, tags;
+		String handle, tags,vendor, title;
 		if (threadNum == -1)
 			start = System.currentTimeMillis();
 		for (JsonNode product : jsonObject.get("products"))
@@ -185,20 +176,17 @@ public class Browser implements BasicSiteFunctions, Checkout
 					product.get("variants").get(0).get("price").asText());
 			if (price >= priceRange[0] && price <= priceRange[1])
 			{
-				handle = product.get("handle").toString().toLowerCase()
-						.replace("\"", "").split("-");
-				tags = product.get("tags").toString().toLowerCase()
-						.replaceAll("[\\[\\]\\s\"]", "").split(",");
-				ArrayList<String> productWords = new ArrayList<String>(
-						Arrays.asList(handle));
-				productWords.addAll(Arrays.asList(tags));
+				title = product.get("title").toString().toLowerCase();
+				handle = product.get("handle").toString().toLowerCase();
+				tags = product.get("tags").toString().toLowerCase();
+				vendor = product.get("vendor").toString().toLowerCase();
+				String keywordList = title + handle + tags + vendor;
 				for (String keyword : keywords)
-				{
-					if (productWords.contains(keyword) && keyword != "")
-					{
+				{	
+					if(keyword == null)
+						break;
+					else if (keywordList.contains(keyword.toLowerCase()) && keyword != "")
 						count++;
-						productWords.remove(keyword);
-					}
 					if (max < count)
 						max = count;
 				}
@@ -230,7 +218,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				this.notify();
 				return;
 			}
-			while(notifier != 5)
+			while(notifier != tasks)
 				this.wait();
 		}
 		String newUrl = getUrl() + extension.replace("page=1", "page=" + bestPage);
@@ -261,7 +249,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 	}
 	public String getUrl()
 	{
-		return url.substring(0, url.indexOf("/collections"));
+		return url.substring(0, url.indexOf("/products"));
 	}
 	private int pageCount()
 	{
@@ -299,18 +287,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 			ex.printStackTrace();
 		}
 		return data;
-	}
-	private static String[] defaultSites()
-	{
-		return new String[]
-		{"https://kith.com/collections/all/products.json",
-				"https://undefeated.com/collections/all/products.json",
-				"https://shop.extrabutterny.com/collections/all/products.json",
-				"https://bdgastore.com/collections/all/products.json",
-				"https://cncpts.com/collections/all/products.json",
-				"https://www.notre-shop.com/collections/all/products.json",
-				"https://juicestore.com/collections/all/products.json",
-				"https://shop.havenshop.com/collections/all/products.json"};
 	}
 	public void setTotalPages(String pages, String key)
 	{
@@ -384,6 +360,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 							{
 								t = threadDriver.findElement(By.xpath("//div[@data-step='stock_problems']"));
 								System.out.println("Error: Item is Out of Stock.");
+								threadDriver.quit();
 								return;
 
 
@@ -441,7 +418,7 @@ public class Browser implements BasicSiteFunctions, Checkout
 				}
 			}
 		};
-		for (int i = 0; i < ((availableThreads > 5) ? 5: availableThreads); i++)
+		for (int i = 0; i < tasks; i++)
 		{
 			thread[i] = new Thread(multiCheckout, ("Thread " + (2 + i)));
 			thread[i].start();
@@ -493,5 +470,22 @@ public class Browser implements BasicSiteFunctions, Checkout
 	public void setPriceRange(int[] priceRange)
 	{
 		this.priceRange = priceRange;
+	}
+	public static String[] defaultStores()
+	{
+		return new String[] {"Kith", "Undefeated", "ExtraButteryNY", "Bodega Store", "Cncpts",
+							"Notre Shop", "Juice Store", "Haven Shop"};
+	}
+	public static String[] defaultSites()
+	{
+		return new String[]
+		{		"https://kith.com/collections/all/products.json",
+				"https://undefeated.com/collections/all/products.json",
+				"https://shop.extrabutterny.com/collections/all/products.json",
+				"https://bdgastore.com/collections/all/products.json",
+				"https://cncpts.com/collections/all/products.json",
+				"https://www.notre-shop.com/collections/all/products.json",
+				"https://juicestore.com/collections/all/products.json",
+				"https://shop.havenshop.com/collections/all/products.json"};
 	}
 }

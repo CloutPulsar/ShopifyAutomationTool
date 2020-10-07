@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="550.0" prefWidth="850.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.mainController">
+   <children>
+      <TextField fx:id="authField" alignment="CENTER" layoutX="287.0" layoutY="248.0" onMouseClicked="#onauthFieldClick" prefHeight="38.0" prefWidth="290.0" promptText="Enter your key" style="-fx-background-color: #0f1b29; -fx-background-radius: 10; -fx-text-fill: cyan;">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </TextField>
+      <ImageView fx:id="logoIcon" fitHeight="221.0" fitWidth="275.0" layoutX="295.0" layoutY="46.0">
+         <image>
+            <Image url="@helix%20logo.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="acitvateBtn" layoutX="374.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleActivateButton" prefHeight="28.0" prefWidth="117.0" style="-fx-background-color: #19293c; -fx-background-radius: 5;" text="Activate" textFill="WHITE">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow level="0.39" />
+         </effect>
+      </Button>
+      <Label layoutX="760.0" layoutY="522.0" prefHeight="28.0" prefWidth="117.0" text="Beta v0.0.1" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+         <font>
+            <Font name="C059-Bold" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </Label>
+      <Button fx:id="closeBtn" layoutX="5.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCloseBtn" onMouseEntered="#handleCloseBtnEntered" onMouseExited="#handleCloseBtnExited" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ffffff00;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@exit%20button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="minimizeBtn" layoutX="39.0" layoutY="2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMinimizeBtn" onMouseEntered="#handleMinimizeBtnEntered" onMouseExited="#handleMinimizeBtnExited" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ffffff00;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="17.0" fitWidth="17.0">
+               <image>
+                  <Image url="@mini%20button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label fx:id="responseLabel" alignment="CENTER" layoutX="295.0" layoutY="298.0" prefHeight="38.0" prefWidth="275.0" text="Label" textFill="WHITE" visible="false">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

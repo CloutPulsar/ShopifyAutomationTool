@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="740.0" prefWidth="1387.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.menuController">
+   <children>
+      <Pane fx:id="menuPane" layoutX="-1.0" layoutY="-11.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="751.0" prefWidth="99.0" style="-fx-background-color: #121f2e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1294.0" AnchorPane.topAnchor="-11.0">
+         <children>
+            <Separator layoutX="90.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" opacity="0.13" orientation="VERTICAL" prefHeight="741.0" prefWidth="6.0" style="-fx-background-color: #07111d;" />
+            <Button fx:id="userBtn" layoutX="23.0" layoutY="180.0" mnemonicParsing="false" style="-fx-background-color: #121f2e;">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0">
+                     <image>
+                        <Image url="@profile.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Separator layoutX="90.0" layoutY="10.0" opacity="0.13" orientation="VERTICAL" prefHeight="741.0" prefWidth="6.0" style="-fx-background-color: #07111d;" />
+            <Button fx:id="homeBtn" layoutX="26.0" layoutY="130.0" mnemonicParsing="false" style="-fx-background-color: #121f2e;">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@home-house-building-page-city-casa-old-vintage-46266.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="securityBtn" layoutX="23.5" layoutY="292.0" mnemonicParsing="false" style="-fx-background-color: #121f2e;">
+               <graphic>
+                  <ImageView fitHeight="21.0" fitWidth="21.0">
+                     <image>
+                        <Image url="@account.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="settingsBtn" layoutX="21.0" layoutY="342.0" mnemonicParsing="false" style="-fx-background-color: #121f2e;">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0">
+                     <image>
+                        <Image url="@settings.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="proxyBtn" layoutX="25.0" layoutY="240.0" mnemonicParsing="false" style="-fx-background-color: #121f2e;">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@proxy.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <TextField fx:id="monitorDelayField" alignment="CENTER" layoutX="10.0" layoutY="524.0" prefHeight="25.0" prefWidth="70.0" promptText="1000" style="-fx-background-color: #121f2e; -fx-border-color: #08121e; -fx-border-radius: 5;">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </TextField>
+            <Label alignment="CENTER" layoutX="8.0" layoutY="505.0" text="Monitor Delay" textFill="WHITE" />
+            <TextField fx:id="checkoutDelayField" alignment="CENTER" layoutX="9.0" layoutY="603.0" prefHeight="25.0" prefWidth="70.0" promptText="1000" style="-fx-background-color: #121f2e; -fx-border-color: #08121e; -fx-border-radius: 5;">
+               <font>
+                  <Font name="System Bold" size="11.0" />
+               </font>
+            </TextField>
+            <Label alignment="CENTER" layoutX="4.0" layoutY="582.0" text="Checkout Delay" textFill="WHITE" />
+            <Button fx:id="saveBtn" defaultButton="true" layoutX="23.0" layoutY="650.0" mnemonicParsing="false" style="-fx-background-color: #52b582; -fx-background-radius: 4;" text="Save" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </Pane>
+      <ImageView fx:id="logoIcon" fitHeight="120.0" fitWidth="125.0" layoutX="-19.0" layoutY="-5.0" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="-19.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="-5.0">
+         <image>
+            <Image url="@helix%20logo.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="1335.0" layoutY="721.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="17.0" prefWidth="53.0" text=" v0.0.1" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="1335.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="721.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="checkUpdateBtn" layoutX="1195.0" layoutY="717.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="143.0" style="-fx-background-color: #ffffff00;" text="Check for Updates" textFill="WHITE" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="1195.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="717.0">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Pane layoutX="102.0" layoutY="28.0" prefHeight="50.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;" AnchorPane.bottomAnchor="662.0" AnchorPane.leftAnchor="102.0" AnchorPane.rightAnchor="33.0" AnchorPane.topAnchor="28.0">
+         <children>
+            <Label layoutX="123.0" layoutY="16.0" text="Site" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="260.0" layoutY="16.0" text="Product" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="444.0" layoutY="16.0" text="Profile" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="607.0" layoutY="16.0" text="Proxies" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="779.0" layoutY="16.0" text="Size" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="953.0" layoutY="17.0" text="Status" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="1120.0" layoutY="17.0" text="Actions" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="20.0" layoutY="17.0" text="#" textFill="#969696">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="445.0" layoutY="691.0" prefHeight="35.0" prefWidth="497.0" style="-fx-background-color: #121f2e; -fx-background-radius: 5;" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="445.0" AnchorPane.rightAnchor="445.0" AnchorPane.topAnchor="691.0">
+         <children>
+            <Button fx:id="startTaskBtn" layoutX="209.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #121f2e; -fx-background-radius: 5; -fx-border-color: #00f88c; -fx-border-radius: 5;" text="Start Tasks" textFill="#00f88c">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="stopAllTaskBtn" layoutX="107.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #121f2e; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: f19d00;" text="Stop All" textFill="#f19d00">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="clearAllTaskBtn" layoutX="329.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #121f2e; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #e00030;" text="Clear All" textFill="#e00030">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="EditAllTaskBtn" layoutX="6.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #121f2e; -fx-background-radius: 5; -fx-border-color: #00b0fb; -fx-border-radius: 5;" text="Edit All" textFill="#00b0fb">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="CaptchaBtn" layoutX="429.0" layoutY="4.0" mnemonicParsing="false" style="-fx-background-color: #121f2e; -fx-background-radius: 5; -fx-border-radius: 5; -fx-border-color: #6c68b5;" text="Captcha" textFill="#6c68b5">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <ScrollPane hbarPolicy="NEVER" layoutX="105.0" layoutY="96.0" prefHeight="579.0" prefWidth="1280.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="96.0">
+        <content>
+          <AnchorPane fx:id="taskListPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: #08121e; -fx-border-color: #08121e;">
+               <children>
+                  <Pane fx:id="defaultPane" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="1" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="117.0" layoutY="14.0" text="Kith" textFill="WHITE" />
+                        <Label layoutX="205.0" layoutY="14.0" prefHeight="17.0" prefWidth="170.0" text="NIKE AIR JORDAN 4 RETRO LE" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="424.0" layoutY="14.0" text="Edgar AMEX" textFill="WHITE" />
+                        <Label layoutX="579.0" layoutY="14.0" text="COOKIE DC AIO" textFill="WHITE" />
+                        <Label layoutX="771.0" layoutY="14.0" text="10.5" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="924.0" layoutY="13.0" text="Checked Out!" textAlignment="CENTER" textFill="#00ff7b">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutY="52.0" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;" visible="false">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="2" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="117.0" layoutY="14.0" text="Kith" textFill="WHITE" />
+                        <Label layoutX="205.0" layoutY="14.0" prefHeight="17.0" prefWidth="170.0" text="NIKE AIR JORDAN 4 RETRO LE" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="424.0" layoutY="14.0" text="VISA Edgar" textFill="WHITE" />
+                        <Label layoutX="607.0" layoutY="14.0" text="None" textAlignment="CENTER" textFill="WHITE" />
+                        <Label layoutX="775.0" layoutY="14.0" text="9.5" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="939.0" layoutY="13.0" text="Declined" textAlignment="CENTER" textFill="#e82950">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <Button fx:id="create_taskBtn" layoutX="109.0" layoutY="697.0" mnemonicParsing="false" onAction="#handleCreatTskBtn" style="-fx-background-color: #08121e; -fx-background-radius: 5; -fx-border-color: #00ffe1; -fx-border-radius: 5;" text="Create Tasks" textFill="#00ffe1">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <Button fx:id="closeBtn" layoutX="1310.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCloseBtn" onMouseEntered="#handleCloseBtnEntered" onMouseExited="#handleCloseBtnExited" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ffffff00;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@exit%20button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="minimizeBtn" layoutX="1344.0" layoutY="3.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleMinimizeBtn" onMouseEntered="#handleMinimizeBtnEntered" onMouseExited="#handleMinimizeBtnExited" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: #ffffff00;">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="17.0" fitWidth="17.0">
+               <image>
+                  <Image url="@mini%20button.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
