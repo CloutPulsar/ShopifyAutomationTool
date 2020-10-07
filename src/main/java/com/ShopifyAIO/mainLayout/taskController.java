@@ -64,8 +64,14 @@ public class taskController {
 
 	private Stage stage;
 	private mainModel model = new mainModel();
-
+	private static menuController menu = null;
+	private static AnchorPane updatedTaskList;
 	private String defaultStyle = null;
+	
+	public static AnchorPane getMenuControllerUpdated()
+	{
+		return updatedTaskList;
+	}
     @FXML
 	void handleAccountList(ActionEvent event) {
 		AccountList.setPromptText(AccountList.getValue().toString());
@@ -74,9 +80,12 @@ public class taskController {
 	@FXML
 	void handleCreateTskBtnPopUp(ActionEvent event) throws IOException {
 		stage = (Stage)createTaskBtnPopUp.getScene().getWindow();
-		FXMLLoader load = new FXMLLoader(getClass().getResource("/mainmenu.fxml"));
-		AnchorPane main = load.load();
-		menuController menu = load.getController();
+		if(menu == null)
+		{
+			FXMLLoader load = new FXMLLoader(getClass().getResource("/mainmenu.fxml"));
+			AnchorPane main = load.load();
+			menu = load.getController();
+		}
 		double test = menu.getDefaultPane().getHeight();
 		for(int i = 1; i <=  model.getTaskQuantity(); i++)
 		{
@@ -106,11 +115,13 @@ public class taskController {
 					list.get(j).setTextFill(Color.WHITE);
 				list.get(j).setLayoutX(menu.getDefaultPane().getChildren().get(j).getLayoutX());
 				list.get(j).setLayoutY(menu.getDefaultPane().getChildren().get(j).getLayoutY());
+				list.get(j).setCache(true);
 				tmp.getChildren().add(list.get(j));
 			}
 			menu.getTaskListPane().getChildren().add(tmp);
 		}
 		model.setTaskCounter(model.getTaskQuantity() + model.getTaskCounter());
+		updatedTaskList = menu.getTaskListPane();
 		stage.close();
 		
 	}

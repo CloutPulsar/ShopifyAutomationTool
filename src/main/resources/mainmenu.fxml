@@ -203,9 +203,9 @@
             </Button>
          </children>
       </Pane>
-      <ScrollPane hbarPolicy="NEVER" layoutX="105.0" layoutY="96.0" prefHeight="579.0" prefWidth="1280.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="96.0">
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="105.0" layoutY="96.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-Infinity" prefWidth="-Infinity" style="-fx-background: #08121e;" vbarPolicy="ALWAYS" vmax="3.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="96.0">
         <content>
-          <AnchorPane fx:id="taskListPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: #08121e; -fx-border-color: #08121e;">
+          <AnchorPane fx:id="taskListPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #08121e; -fx-border-color: #08121e;">
                <children>
                   <Pane fx:id="defaultPane" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
                      <children>
