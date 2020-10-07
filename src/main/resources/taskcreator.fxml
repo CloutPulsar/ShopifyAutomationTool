@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="taskPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handletaskPane" onMouseExited="#onMouseExitedTaskPopup" prefHeight="489.0" prefWidth="627.0" style="-fx-background-color: #08121e #08121e; -fx-border-color: #FF000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.menuController">
+<AnchorPane fx:id="taskPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handletaskPane" onMouseExited="#onMouseExitedTaskPopup" prefHeight="489.0" prefWidth="627.0" style="-fx-background-color: #08121e #08121e; -fx-border-color: #FF000000;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.taskController">
    <children>
       <AnchorPane layoutX="22.0" layoutY="44.0" prefHeight="401.0" prefWidth="594.0">
          <children>

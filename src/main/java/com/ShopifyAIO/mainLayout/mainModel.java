@@ -52,7 +52,7 @@ public class mainModel
 	private  static HashMap<String, LinkedList<Object>> appInfo = new HashMap<>();
 	private  String productName;
 	private  int taskQuantity = 1;
-	private  static int taskCounter = 0;
+	private static int taskCounter = 0;
 	private Browser brows = new Browser();
 	public boolean sendandrecvAuth(String key) throws UnsupportedEncodingException, UnknownHostException, SocketException
 	{
@@ -233,17 +233,17 @@ public class mainModel
 		try
 		{
 			//Read the the Profiles created by the user.
-			BufferedReader os = new BufferedReader(new FileReader("profile.csv"));
+			BufferedReader os = new BufferedReader(new FileReader("/home/edgar153/ShopifyAutomationTool/src/main/resources/profile.csv"));
 			while((line = os.readLine()) != null)
 				profile.add(line.split(","));
 			os.close();
 			//Read the Proxies List stored on the Proxies CSV files
-			os = new BufferedReader(new FileReader("proxies.csv"));
+			os = new BufferedReader(new FileReader("/home/edgar153/ShopifyAutomationTool/src/main/resources/proxies.csv"));
 			while((line = os.readLine()) != null)
 				proxies.add(line.split(","));
 			os.close();
 			//Read the login credentials created by the user.
-			os = new BufferedReader(new FileReader("account.csv"));
+			os = new BufferedReader(new FileReader("/home/edgar153/ShopifyAutomationTool/src/main/resources/account.csv"));
 			while((line = os.readLine()) != null)
 				account.add(line.split(","));
 			os.close();
@@ -279,5 +279,15 @@ public class mainModel
 	public void setTaskQuantity(int taskQuantity)
 	{
 		this.taskQuantity = taskQuantity;
+	}
+
+	public  int getTaskCounter()
+	{
+		return taskCounter;
+	}
+
+	public  void setTaskCounter(int taskCounter)
+	{
+		mainModel.taskCounter = taskCounter;
 	}
 }

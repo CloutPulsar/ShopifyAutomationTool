@@ -211,7 +211,7 @@
                      <children>
                         <Label layoutX="14.0" layoutY="14.0" text="1" textFill="WHITE">
                            <font>
-                              <Font name="System Bold" size="12.0" />
+                              <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
                         <Label layoutX="117.0" layoutY="14.0" text="Kith" textFill="WHITE" />
@@ -234,7 +234,7 @@
                         </Label>
                      </children>
                   </Pane>
-                  <Pane layoutY="52.0" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
+                  <Pane layoutY="52.0" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;" visible="false">
                      <children>
                         <Label layoutX="14.0" layoutY="14.0" text="2" textFill="WHITE">
                            <font>
