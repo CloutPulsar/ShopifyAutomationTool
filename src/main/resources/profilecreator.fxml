@@ -102,12 +102,12 @@
             <Image url="@helix%20logo.png" />
          </image>
       </ImageView>
-      <Label layoutX="1343.0" layoutY="721.0" text=" v0.0.1" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="1343.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="721.0">
+      <Label layoutX="1327.0" layoutY="721.0" prefHeight="17.0" prefWidth="54.0" text=" v0.0.1" textFill="WHITE" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="1327.0" AnchorPane.rightAnchor="6.0" AnchorPane.topAnchor="721.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <Button layoutX="1218.0" layoutY="717.0" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text="Check for Updates" textFill="WHITE" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="1218.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="717.0">
+      <Button layoutX="1161.0" layoutY="717.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="161.0" style="-fx-background-color: #ffffff00;" text="Check for Updates" textFill="WHITE" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="1161.0" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="717.0">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

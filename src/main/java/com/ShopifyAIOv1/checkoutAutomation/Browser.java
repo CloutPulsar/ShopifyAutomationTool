@@ -1,3 +1,4 @@
+package com.ShopifyAIOv1.checkoutAutomation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -175,10 +176,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 					product.get("variants").get(0).get("price").asText());
 			if (price >= priceRange[0] && price <= priceRange[1])
 			{
-				//handle = product.get("handle").toString().toLowerCase()
-				//		.replace("\"", "").split("-");
-				//tags = product.get("tags").toString().toLowerCase()
-				//		.replaceAll("[\\[\\]\\s\"]", "").split(",");
 				title = product.get("title").toString().toLowerCase();
 				handle = product.get("handle").toString().toLowerCase();
 				tags = product.get("tags").toString().toLowerCase();
@@ -290,18 +287,6 @@ public class Browser implements BasicSiteFunctions, Checkout
 			ex.printStackTrace();
 		}
 		return data;
-	}
-	private static String[] defaultSites()
-	{
-		return new String[]
-		{"https://kith.com/collections/all/products.json",
-				"https://undefeated.com/collections/all/products.json",
-				"https://shop.extrabutterny.com/collections/all/products.json",
-				"https://bdgastore.com/collections/all/products.json",
-				"https://cncpts.com/collections/all/products.json",
-				"https://www.notre-shop.com/collections/all/products.json",
-				"https://juicestore.com/collections/all/products.json",
-				"https://shop.havenshop.com/collections/all/products.json"};
 	}
 	public void setTotalPages(String pages, String key)
 	{
@@ -485,5 +470,22 @@ public class Browser implements BasicSiteFunctions, Checkout
 	public void setPriceRange(int[] priceRange)
 	{
 		this.priceRange = priceRange;
+	}
+	public static String[] defaultStores()
+	{
+		return new String[] {"Kith", "Undefeated", "ExtraButteryNY", "Bodega Store", "Cncpts",
+							"Notre Shop", "Juice Store", "Haven Shop"};
+	}
+	public static String[] defaultSites()
+	{
+		return new String[]
+		{		"https://kith.com/collections/all/products.json",
+				"https://undefeated.com/collections/all/products.json",
+				"https://shop.extrabutterny.com/collections/all/products.json",
+				"https://bdgastore.com/collections/all/products.json",
+				"https://cncpts.com/collections/all/products.json",
+				"https://www.notre-shop.com/collections/all/products.json",
+				"https://juicestore.com/collections/all/products.json",
+				"https://shop.havenshop.com/collections/all/products.json"};
 	}
 }

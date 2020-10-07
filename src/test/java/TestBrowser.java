@@ -5,6 +5,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.ShopifyAIOv1.checkoutAutomation.Browser;
+import com.ShopifyAIOv1.checkoutAutomation.clientInfo;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 

@@ -1,3 +1,4 @@
+package com.ShopifyAIOv1.checkoutAutomation;
 
 public interface Checkout
 {

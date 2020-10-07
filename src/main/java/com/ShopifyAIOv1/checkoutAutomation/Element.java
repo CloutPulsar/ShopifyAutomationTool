@@ -1,3 +1,4 @@
+package com.ShopifyAIOv1.checkoutAutomation;
 
 //Credit to Oneiros for the OOP implementation
 public class Element implements Comparable<Element>

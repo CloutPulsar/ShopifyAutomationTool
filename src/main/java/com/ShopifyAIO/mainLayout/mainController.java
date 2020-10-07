@@ -25,11 +25,8 @@ public class mainController
 {
 
 	// define your offsets here
-	private double xOffset = 0;
-	private double yOffset = 0;
 	private Stage stage;
 	private mainModel model = new mainModel();
-	private static StringBuilder authKey = new StringBuilder();
 
 	@FXML
 	private TextField authField;
@@ -58,15 +55,15 @@ public class mainController
 	private void onMouseDragged(MouseEvent event)
 	{
 		stage = (Stage) logoIcon.getScene().getWindow();
-		stage.setX(event.getScreenX() - xOffset);
-		stage.setY(event.getScreenY() - yOffset);
+		stage.setX(event.getScreenX() - model.getxOffset());
+		stage.setY(event.getScreenY() - model.getyOffset());
 	}
 
 	@FXML
 	private void onMousePressed(MouseEvent event)
 	{
-		xOffset = event.getSceneX();
-		yOffset = event.getSceneY();
+		model.setxOffset(event.getSceneX());
+		model.setyOffset(event.getSceneY());
 	}
 
 	@FXML
@@ -82,12 +79,13 @@ public class mainController
 		{
 			responseLabel.setText("Connecting to database...");
 			responseLabel.setTextFill(Color.web("#03fcf4"));
-			authKey.append(authField.getText());
-			if(model.sendandrecvAuth(authKey.toString()) == true)
+			model.setAuthKey(authField.getText());
+			if(model.sendandrecvAuth(model.getAuthKey()) == true)
 			{
 				responseLabel.setText("Authentication Successful!");
 				responseLabel.setTextFill(Color.web("#03fc03"));
 				Thread.sleep(1500);
+				model.appInfoInitialize();
 				Stage stage = (Stage) responseLabel.getScene().getWindow();
 				stage.setScene(model.getNextWindow());
 				
@@ -95,7 +93,7 @@ public class mainController
 			{
 				responseLabel.setText("Authentication Unsuccessful!");
 				responseLabel.setTextFill(Color.web("#fc6703"));
-				authKey.setLength(0);
+				model.clearKey();
 			}
 		}
 	}
@@ -104,7 +102,7 @@ public class mainController
 	void handleCloseBtn(ActionEvent event) throws UnsupportedEncodingException, UnknownHostException, SocketException
 	{
 		stage = (Stage) closeBtn.getScene().getWindow();
-		model.restoreKey(authKey.toString());
+		model.restoreKey(model.getAuthKey());
 		stage.close();
 	}
 

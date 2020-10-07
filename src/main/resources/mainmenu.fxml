@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="740.0" prefWidth="1387.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.menuController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="740.0" prefWidth="1387.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.menuController">
    <children>
       <Pane fx:id="menuPane" layoutX="-1.0" layoutY="-11.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="751.0" prefWidth="99.0" style="-fx-background-color: #121f2e;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1294.0" AnchorPane.topAnchor="-11.0">
          <children>
@@ -97,7 +97,7 @@
             </Button>
          </children>
       </Pane>
-      <ImageView fitHeight="120.0" fitWidth="125.0" layoutX="-19.0" layoutY="-5.0" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="-19.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="-5.0">
+      <ImageView fx:id="logoIcon" fitHeight="120.0" fitWidth="125.0" layoutX="-19.0" layoutY="-5.0" AnchorPane.bottomAnchor="625.0" AnchorPane.leftAnchor="-19.0" AnchorPane.rightAnchor="1281.0" AnchorPane.topAnchor="-5.0">
          <image>
             <Image url="@helix%20logo.png" />
          </image>
@@ -205,9 +205,9 @@
       </Pane>
       <ScrollPane hbarPolicy="NEVER" layoutX="105.0" layoutY="96.0" prefHeight="579.0" prefWidth="1280.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="105.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="96.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: #08121e; -fx-border-color: #08121e;">
+          <AnchorPane fx:id="taskListPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: #08121e; -fx-border-color: #08121e;">
                <children>
-                  <Pane prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
+                  <Pane fx:id="defaultPane" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
                      <children>
                         <Label layoutX="14.0" layoutY="14.0" text="1" textFill="WHITE">
                            <font>
@@ -265,7 +265,7 @@
             </AnchorPane>
         </content>
       </ScrollPane>
-      <Button layoutX="109.0" layoutY="697.0" mnemonicParsing="false" style="-fx-background-color: #08121e; -fx-background-radius: 5; -fx-border-color: #00ffe1; -fx-border-radius: 5;" text="Create Tasks" textFill="#00ffe1">
+      <Button fx:id="create_taskBtn" layoutX="109.0" layoutY="697.0" mnemonicParsing="false" onAction="#handleCreatTskBtn" style="-fx-background-color: #08121e; -fx-background-radius: 5; -fx-border-color: #00ffe1; -fx-border-radius: 5;" text="Create Tasks" textFill="#00ffe1">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>

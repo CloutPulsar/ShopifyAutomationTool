@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" prefHeight="550.0" prefWidth="850.0" style="-fx-background-color: #08121e;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ShopifyAIO.mainLayout.mainController">
    <children>
-      <TextField fx:id="authField" alignment="CENTER" layoutX="287.0" layoutY="248.0" onMouseClicked="#onauthFieldClick" prefHeight="38.0" prefWidth="290.0" promptText="Enter your key" style="-fx-background-color: #0f1b29; -fx-background-radius: 10;">
+      <TextField fx:id="authField" alignment="CENTER" layoutX="287.0" layoutY="248.0" onMouseClicked="#onauthFieldClick" prefHeight="38.0" prefWidth="290.0" promptText="Enter your key" style="-fx-background-color: #0f1b29; -fx-background-radius: 10; -fx-text-fill: cyan;">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
