@@ -8,8 +8,11 @@ import java.net.UnknownHostException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -21,7 +24,7 @@ import javafx.stage.StageStyle;
 
 public class menuController {
 
-	
+
 	@FXML
 	private AnchorPane rootPane;
 	@FXML
@@ -49,6 +52,8 @@ public class menuController {
 
 	@FXML
 	private TextField checkoutDelayField;
+	@FXML
+	private ScrollPane scrollPane;
 
 	@FXML
 	private Button saveBtn;
@@ -124,12 +129,15 @@ public class menuController {
 	void handleCreatTskBtn(ActionEvent event) throws IOException 
 	{
 		stage = new Stage();
-		stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/taskcreator.fxml"))));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/taskcreator.fxml"));
+		stage.initOwner(rootPane.getScene().getWindow());
+		stage.setScene(new Scene((Parent)loader.load()));
 		stage.initStyle(StageStyle.UNDECORATED);
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setX(rootPane.getScene().getWindow().getX()+(rootPane.getScene().getWindow().getWidth() / 3));
 		stage.setY(rootPane.getScene().getWindow().getY()+(rootPane.getScene().getWindow().getHeight() / 5));
 		stage.showAndWait();
+		taskListPane.getChildren().setAll(taskController.getMenuControllerUpdated());
 	}
 	@FXML
 	private void onMouseDragged(MouseEvent event)
@@ -165,7 +173,7 @@ public class menuController {
 	{
 		this.taskListPane = taskListPane;
 	}
-	
+
 
 
 }
