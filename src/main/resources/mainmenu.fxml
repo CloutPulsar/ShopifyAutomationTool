@@ -209,25 +209,25 @@
                <children>
                   <Pane fx:id="defaultPane" prefHeight="44.0" prefWidth="1252.0" style="-fx-background-color: #0f1b29; -fx-background-radius: 5;">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" text="1" textFill="WHITE">
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="14.0" text="1" textAlignment="JUSTIFY" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="13.0" />
                            </font>
                         </Label>
-                        <Label layoutX="117.0" layoutY="14.0" text="Kith" textFill="WHITE" />
-                        <Label layoutX="205.0" layoutY="14.0" prefHeight="17.0" prefWidth="170.0" text="NIKE AIR JORDAN 4 RETRO LE" textFill="WHITE">
+                        <Label alignment="CENTER" layoutX="55.0" layoutY="14.0" maxHeight="16.0" maxWidth="150.0" prefHeight="16.0" prefWidth="150.0" text="Kith" textFill="WHITE" />
+                        <Label alignment="CENTER" layoutX="205.0" layoutY="14.0" maxHeight="17.0" maxWidth="150.0" prefHeight="17.0" prefWidth="170.0" text="NIKE AIR JORDAN 4 RETRO LE" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="424.0" layoutY="14.0" text="Edgar AMEX" textFill="WHITE" />
-                        <Label layoutX="579.0" layoutY="14.0" text="COOKIE DC AIO" textFill="WHITE" />
-                        <Label layoutX="771.0" layoutY="14.0" text="10.5" textFill="WHITE">
+                        <Label alignment="CENTER" layoutX="391.0" layoutY="13.0" maxHeight="16.0" maxWidth="150.0" prefHeight="16.0" prefWidth="150.0" text="Edgar AMEX" textFill="WHITE" />
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="558.0" layoutY="13.0" maxHeight="16.0" maxWidth="150.0" prefHeight="16.0" prefWidth="150.0" text="COOKIE DC AIO" textFill="WHITE" />
+                        <Label alignment="CENTER" layoutX="717.0" layoutY="15.0" maxHeight="15.0" maxWidth="150.0" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="150.0" text="M" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>
                         </Label>
-                        <Label layoutX="924.0" layoutY="13.0" text="Checked Out!" textAlignment="CENTER" textFill="#00ff7b">
+                        <Label alignment="CENTER" layoutX="903.0" layoutY="14.0" maxHeight="15.0" maxWidth="150.0" prefHeight="15.0" prefWidth="150.0" text="Checked Out!" textAlignment="CENTER" textFill="#00ff7b">
                            <font>
                               <Font name="System Bold" size="12.0" />
                            </font>

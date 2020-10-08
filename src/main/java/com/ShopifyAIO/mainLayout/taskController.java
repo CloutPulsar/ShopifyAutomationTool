@@ -8,6 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class taskController {
@@ -86,8 +88,7 @@ public class taskController {
 			AnchorPane main = load.load();
 			menu = load.getController();
 		}
-		double test = menu.getDefaultPane().getHeight();
-		for(int i = 1; i <=  model.getTaskQuantity(); i++)
+		for(int i = 1; i <= model.getTaskQuantity(); i++)
 		{
 			List<Label> list = new LinkedList<Label>();
 			Pane tmp = new Pane();
@@ -101,7 +102,7 @@ public class taskController {
 			Label action = new Label("None");
 			status.setTextFill(Color.CYAN);
 			status.setFont(Font.font("System",FontWeight.BOLD, 12));
-			tmp.setLayoutY((model.getTaskCounter()+i)*52);
+			tmp.setLayoutY((model.getTaskCounter()+i-1)*52);
 			tmp.setPrefHeight(menu.getDefaultPane().getPrefHeight());
 			tmp.setPrefWidth(menu.getDefaultPane().getPrefWidth());
 			tmp.setStyle(menu.getDefaultPane().getStyle());
@@ -114,11 +115,22 @@ public class taskController {
 				if(j < 6)
 					list.get(j).setTextFill(Color.WHITE);
 				list.get(j).setLayoutX(menu.getDefaultPane().getChildren().get(j).getLayoutX());
-				list.get(j).setLayoutY(menu.getDefaultPane().getChildren().get(j).getLayoutY());
+				list.get(j).setLayoutY(menu.getDefaultPane().getChildren().get(j).getLayoutY());					;
+				if(j > 0) 
+				{
+					list.get(j).setPrefHeight(17);
+					list.get(j).setPrefWidth(150);
+					list.get(j).setMaxHeight(17);
+					list.get(j).setMaxWidth(150);
+				}
+				list.get(j).setAlignment(Pos.CENTER);
 				list.get(j).setCache(true);
 				tmp.getChildren().add(list.get(j));
 			}
-			menu.getTaskListPane().getChildren().add(tmp);
+			if((i-1) < 2 && model.getTaskCounter() == 0)
+				menu.getTaskListPane().getChildren().set(model.getTaskCounter()+(i-1), tmp);
+			else
+				menu.getTaskListPane().getChildren().add(tmp);
 		}
 		model.setTaskCounter(model.getTaskQuantity() + model.getTaskCounter());
 		updatedTaskList = menu.getTaskListPane();
